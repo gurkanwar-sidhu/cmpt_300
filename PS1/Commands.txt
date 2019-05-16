@@ -1,0 +1,29 @@
+1. xemacs &
+launches xemacs and the ampersand means that it will run in the background
+
+2. cd
+changes directories
+
+3. cat ~/.bashrc > tmpfile.txt
+executes bashrc and prints output into tmpfiles.txt
+
+4. ln -s tmpfile.txt ~/tmp-alias
+creates a soft link or "shortcut" of tmpfile.txt in tmp-alias directory
+
+5. ls -al
+lists file, -l flag uses long listing format, -a flag includes all files/directores including . and ..
+
+6. chmod a+rwx tmpfile.txt
+rwx: enables read write and execute access on tmpfile.txt to owner, group, and users
+
+7. grep bash /etc/passwd
+searches for bash in passwd file
+
+8. ps -ef | more
+displays current process. -e flag inludes all process of all users. -f flag formats and inludes more information.
+
+9. man 2 chown
+Shows the second manual page for chown command. Page is about system calls.
+
+10. gcc test.c 2> error-msg
+redirects standard error to error-msg file

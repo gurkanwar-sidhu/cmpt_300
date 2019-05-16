@@ -1,0 +1,139 @@
+2a) What does the -E option mean? 
+outputs the current preprocessed program and does not compile the program
+
+What does the pre-processor do?
+Substitute text in the program following the pre-processor commands beginning with #. Targets header files, macro expansions, ect
+
+
+2b) What file is created by this command?
+hello.o
+
+State its name and explain what it is.
+This is an object file. The source code was compiled into machine language
+
+2c) What do you get?
+a.out which is an executable file. 
+
+2d) What error message do you see? 
+undefined reference to `main'
+
+
+Briefly explain this error.
+Executable file needs an entry point. The linker is trying to find main but cannot, therefore error is thrown.
+
+2e) Any error message now?
+No
+
+Explain the differences in the outputs you see above, before
+and after commenting out main() and with and without -c.
+
+	-Before commenting out main() and with -c:
+	compiles to an object file with no errors
+
+	-Before commenting out main() and without -c:
+	outputs exectuable file with no errors
+
+	-After commenting out main() and with -c:
+	outputs object file with no problem
+
+	-After commenting out main() and without -c:
+	Linker cannot find main therefore throws error
+
+
+3a)What do you get? What does this error message mean?
+Segmentaion fault (core dumped). Happens when program trys to access memory it does not have access to.
+
+
+3b) What is the name of the function within which segmentation fault occurs?
+_nl_global_locale
+
+3c)Which library function we call in hello.c causes the error?
+strtol.c
+
+3d)Record the output. 
+(gdb) p argc: $1 = 1
+(gdb) p argv:  (char **) 0x7fffffffdbc8
+
+What does the value argv means?
+It is an array of strings
+
+3e) What does each of these commands do?
+(gdb) info local : shows the local variables and their values in the current stack frame
+(gdb) info args : shows the values of the current function's arguments
+
+3f) What do you get? 
+0x0
+Explain why running hello without command line argument leads to
+a segmentation fault error?
+Because only one argument is being passed in argv[1] is a null pointer. When accessing a null pointer a segmentation fault occurs.
+
+4a)) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
+What do you see? What do they mean?
+
+p x: (int *) 0x0
+x is a pointer which is null or also known as 0x0 in hexadecimal
+
+p y: 0
+y was initialized to 0, therefore contains 0.
+
+p *x: Cannot access memory at address 0x0
+Not allowed to dereference null pointers, because that address is never given memory to store anything
+
+p *y:  Cannot access memory at address 0x0
+y is not a pointer. Therefore we are not allowed to dereference it
+
+p &x: (int **) 0x7fffffffdad8
+This is the address of the pointer x. This address is a pointer to a pointer.
+
+p &y: (int **) 0x7fffffffdad8
+This is the address that contains the value of y, which is 0.
+
+4b) Use gdb to print out and record the value of any of the following which change: x, y,
+*x, *y, &x, &y. For each changed value, explain why?
+
+p x: (int *) 0x7fffffffdad4
+x now points to y because x = &y replaced the null value with y's address.
+
+p y: 1
+since x now points to y the line *x =1 dereferenced x and replaced 0 in y with 1.
+
+p *x: 1
+since x points to y. Dereferencing x will give value of y.
+
+p *y: no change
+
+p &x: no change
+
+p &y: no change
+
+4c) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
+What has changed? Why?
+
+p x: (int *) 0x7fff0000000a
+
+p y: 1 ...no change
+
+p *x: Cannot access memory at address 0x7fff0000000a
+
+
+p *y: no change
+
+p &x: no change
+
+p &y: no change
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
