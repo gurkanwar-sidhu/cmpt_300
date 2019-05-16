@@ -1,0 +1,3 @@
+stuck on 
+4. Now, run the following
+(gdb) set *(x+1) = 10
