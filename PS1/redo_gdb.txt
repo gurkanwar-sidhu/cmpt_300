@@ -1,0 +1,123 @@
+(a) Use gdb to print out and record the values of 
+the following: x, y, *x, *y, &x, &y.
+What do you see? What do they mean?
+
+p x: (int *) 0x0 
+-memory address of x 
+
+p y: 0
+-value at variable y
+
+p *x: Cannot access memory at address 0x0
+-nothing initialized at that memory address
+
+p *y: Cannot access memory at address 0x0
+-y is not a pointer
+
+p &x: (int **) 0x7fffffffdab8
+-address where the pointer x is stored
+
+p &y: (int *) 0x7fffffffdab4
+-memory address where y is stored
+
+3. Now, we are going to use the debugger "set" 
+command to change the values of these variables.
+(gdb) set x = &y
+(gdb) set *x = 1
+(b) Use gdb to print out and record the value of any of the following which change: x, y,
+*x, *y, &x, &y. For each changed value, explain why?
+
+p x: (int *) 0x7fffffffdab4
+-x now points to y's memory address
+p y: 1
+-since x points to y, dereferencing x actually derefences y and changes
+y to 1
+
+p *x:  1
+-y is 1, x points to y, therefore dereferencing x will give value of y
+
+p *y: Cannot access memory at address 0x1
+-not a pointer, cant dereference
+
+p &x: (int **) 0x7fffffffdab8
+-address of x pointer did not change
+
+p &y: (int *) 0x7fffffffdab4
+-did not change
+
+
+4. Now, run the following
+(gdb) set *(x+1) = 10
+(c) Use gdb to print out and record the values of 
+the following: x, y, *x, *y, &x, &y.
+What has changed? Why?
+
+
+p x: (int *) 0x7fff0000000a
+-memory address of x is 0x7fffffffdab8
+-memory address of y is 0x7fffffffdab4
+-since x points to y, and x is beside y,
+dereferencing *(x+1) is actually dereferncing x itself
+since x is one memory space above y.
+-therefore changing x's value.
+
+p y: 1
+-did not change
+
+p *x: Cannot access memory at address 0x7fff0000000a
+-Now that x is pointing to a random spot in memory, 
+since the computer did not allocate that space to us
+we do not have access to that memory.
+
+p *y: Cannot access memory at address 0x1
+-did not change, still cannot derefernce a non pointer
+
+p &x: (int **) 0x7fffffffdab8
+-did not change
+
+p &y:(int *) 0x7fffffffdab4
+-did not change
+
+5. Now run the following
+(gdb) set x = &y
+(gdb) set y = x
+• Predict what this will do. Hint, try forcing the print to display in hex by adding /x:
+(gdb) p /x y
+
+-y contains the address of itself
+(d) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
+What values do you see? Explain the changes.
+
+p x: (int *) 0x7fffffffdab4
+-points to y's memory address
+
+p y: -9548   and p /x y: 0xffffdab4
+-y contains memory address of itslef
+
+p /x *x: 0xffffdab4
+-x ponts to y, since y contains memory address of y then dereferencing x will give address of y
+
+p *y: Cannot access memory at address 0xffffffffffffdab4
+-did not change, still can't dereference a non pointer.
+
+p &x: (int **) 0x7fffffffdab8
+-did not change
+
+p &y:(int *) 0x7fffffffdab4
+-did not change
+
+
+6. Now, exit from the debugger, change your C program to the following, and re-compile
+int main(void)
+{
+int *x = 0;
+int y = x;
+return 0;
+}
+7. You should get a warning message. Consider what causes the warning.
+8. Now, recompile with the -Wall option of gcc.
+(e) What is the option -Wall for?
+9. Edit the program to remove all the warning messages. 
+
+//check : i dont get any error messages
+

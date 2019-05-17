@@ -1,0 +1,17 @@
+mystring:
+
+
+
+
+linked list:
+
+
+
+sarb:
+-polish up string functions
+-add more test cases
+-help with linked list
+
+gurkanwar:
+-start on linked list functions
+-review string functions and add more test cases

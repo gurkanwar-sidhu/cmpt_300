@@ -1,3 +1,11 @@
-stuck on 
+
+
+Sarb: 
+stuck on:
 4. Now, run the following
 (gdb) set *(x+1) = 10
+
+I'm going to redo part 4 
+Pointer in gdb in redo_pointer.txt
+
+
