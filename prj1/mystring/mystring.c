@@ -44,9 +44,6 @@ char  *mystrcpy (char *dst, const char *src)
 	}
 	//printf("length of string is %d", count);
 
-		//double check : allocate space in dst??????
-		
-
 		//copy over chars to dst
 		
 	for(int i =0 ; i<count+1 ; i++){
@@ -73,7 +70,7 @@ int mystrcmp(const char *s1, const char *s2)
 	int itr =0;
 	char tmpS1 = s1[0];
 	char tmpS2 = s2[0];
-	printf("first letter %c", tmpS1);
+	//printf("first letter %c", tmpS1);
 	while( tmpS1 != '\0' && tmpS2 != '\0'){
 		if(tmpS1 != tmpS2){ //if letter are different
 			if(tmpS1 < tmpS2){
@@ -124,6 +121,9 @@ char *mystrdup(const char *s1)
 
 		//malloc space in new pointer
 	char* strDup = (char*) malloc(count+1 *sizeof(char));
+	if(strDup == NULL){
+		return 	NULL; 
+	}
 		//copy string over 
 	//printf("\n\n\n");	
 	for(int i =0 ; i< count+1 ; i++){
