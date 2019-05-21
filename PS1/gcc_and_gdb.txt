@@ -47,8 +47,8 @@ Segmentaion fault (core dumped). Happens when program trys to access memory it d
 3b) What is the name of the function within which segmentation fault occurs?
 _nl_global_locale
 
-3c)Which library function we call in hello.c causes the error?
-strtol.c
+3c)Which library function we call in hello.c causes the error?//check
+strtol_l.c
 
 3d)Record the output. 
 (gdb) p argc: $1 = 1
