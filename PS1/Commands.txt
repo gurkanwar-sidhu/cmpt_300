@@ -11,7 +11,7 @@ executes bashrc and prints output into tmpfiles.txt
 creates a soft link or "shortcut" of tmpfile.txt in tmp-alias directory
 
 5. ls -al
-lists file, -l flag uses long listing format, -a flag includes all files/directores including . and ..
+lists file, -l flag uses long listing format, -a flag includes all files/directores including '.' and '..'
 
 6. chmod a+rwx tmpfile.txt
 rwx: enables read write and execute access on tmpfile.txt to owner, group, and users
