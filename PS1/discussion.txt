@@ -11,4 +11,6 @@ and the prof specifies this in the handout
 I'm going to redo part 4 
 Pointer in gdb in redo_pointer.txt
 
-
+Gurk:
+I'm done double checkig will now begin reformating 
+for final submission.
