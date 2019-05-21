@@ -62,10 +62,15 @@ It is an array of strings
 (gdb) info args : shows the values of the current functions arguments
 
 3f) What do you get? 
-0x0
+p argv[0]
+$3 = 0x7fffffffe23a "~/cmpt-300/PS1/hello"
+p argv[0][1]
+$4 = 104 'h'
+p argv [1]
+$5 = 0x0
 Explain why running hello without command line argument leads to
 a segmentation fault error?
-Because only one argument is being passed in argv[1] is a null pointer. When accessing a null pointer a segmentation fault occurs.
+Because only one argument is being passed in argv[1], which is a null pointer and when accessing a null pointer, a segmentation fault occurs.
 
 4a)) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
 What do you see? What do they mean?
