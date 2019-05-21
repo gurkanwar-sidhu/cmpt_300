@@ -1,3 +1,7 @@
+#ProblemSet1
+##gcc_and_gdb.txt
+### May 20, 2019
+
 2a) What does the -E option mean? 
 outputs the current preprocessed program and does not compile the program
 
@@ -70,7 +74,8 @@ p argv [1]
 $5 = 0x0
 Explain why running hello without command line argument leads to
 a segmentation fault error?
-Because only one argument is being passed in argv[1], which is a null pointer and when accessing a null pointer, a segmentation fault occurs.
+-Because only one argument is being passed in argv[1], which is a null pointer and when accessing a 
+ null pointer, a segmentation fault occurs.
 
 4a)) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
 What do you see? What do they mean?
@@ -100,7 +105,7 @@ p x: (int *) 0x7fffffffdad4
 x now points to y because x = &y replaced the null value with y's address.
 
 p y: 1
-since x now points to y the line *x =1 dereferenced x and replaced 0 in y with 1.
+since x now points to y the line *x =1 dereferencing x dereferences y and changes y to 1.
 
 p *x: 1
 since x points to y. Dereferencing x will give value of y.
@@ -115,11 +120,18 @@ p &y: no change
 What has changed? Why?
 
 p x: (int *) 0x7fff0000000a
+-memory address of x is 0x7fffffffdab8
+-memory address of y is 0x7fffffffdab4
+-since x points to y, and x is beside y, dereferencing *(x+1) is actually dereferencing x
+ itself since x is one memory space above y.
+-therefore changing x's value.
 
-p y: 1 ...no change
+p y: no change
 
 p *x: Cannot access memory at address 0x7fff0000000a
-
+-Now that x is pointing to a random spot in memory, 
+ since the computer did not allocate that space to us
+ we do not have access to that memory.
 
 p *y: no change
 
@@ -127,18 +139,27 @@ p &x: no change
 
 p &y: no change
 
+4(d) Use gdb to print out and record the values of the following: x, y, *x, *y, &x, &y.
+What values do you see? Explain the changes.
 
+p x: (int *) 0x7fffffffdab4
+-points to y's memory address
 
+p y: -9548   and p /x y: 0xffffdab4
+-y contains memory address of itself
 
+p /x *x: 0xffffdab4
+-x ponts to y, since y contains memory address of y then dereferencing x will give address of y
 
+p *y: no change
 
+p &x: no change
 
+p &y: no change
 
+4(e) What is the option -Wall for?
+-The option -Wall is used for displaying all warnings, even the ones the user may
+ deem trivial.
 
-
-
-
-
-
-
+//check for final submission
 
