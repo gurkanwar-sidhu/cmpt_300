@@ -52,7 +52,7 @@ strtol_l.c
 
 3d)Record the output. 
 (gdb) p argc: $1 = 1
-(gdb) p argv:  (char **) 0x7fffffffdbc8
+(gdb) p argv:  (char **) 0x7fffffffdea8
 
 What does the value argv means?
 It is an array of strings
