@@ -115,9 +115,17 @@ int y = x;
 return 0;
 }
 7. You should get a warning message. Consider what causes the warning.
+warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  int y = x;
 8. Now, recompile with the -Wall option of gcc.
+warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  int y = x;
+warning: unused variable ‘y’ [-Wunused-variable]
+  int y = x;
 (e) What is the option -Wall for?
+The option -Wall is used for displaying all warnings, even the ones the user may
+deem trivial.
 9. Edit the program to remove all the warning messages. 
 
-//check : i dont get any error messages
+//check: ran the end, you're only supposed to get warnings, will begin to edit now.
 
