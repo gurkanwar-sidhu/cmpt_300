@@ -59,7 +59,7 @@ It is an array of strings
 
 3e) What does each of these commands do?
 (gdb) info local : shows the local variables and their values in the current stack frame
-(gdb) info args : shows the values of the current function's arguments
+(gdb) info args : shows the values of the current functions arguments
 
 3f) What do you get? 
 0x0
