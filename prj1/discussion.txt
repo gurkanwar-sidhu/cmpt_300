@@ -1,3 +1,10 @@
+
+Designer: creates a plan for implementation and coordinates activities of the group. Should create design docs (text files or markdown or equivalent only). Put these documents in the directory docs and mention the files in your README file.
+Code reviews: write a critical view of the implementation by the group. Points out what is missing, inelegant code, etc. and produces a code review document (text files or markdown or equivalent only). Put these documents in the directory docs and mention the files in your README file.
+Development: write the code. This can be done in collaboration.
+Testcases: write testcases to stress test the code. Provide the testcases in your submission.
+
+
 mystring:
 
 
