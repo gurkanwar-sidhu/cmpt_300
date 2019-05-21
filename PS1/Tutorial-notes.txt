@@ -1,0 +1,30 @@
+#Tutorial
+## May 16, 2019
+
+1. xemacs &
+2. cd
+3. cat ~/.bashrc > tmpfile.txt
+-cat prints file into terminal
+- arrow (>), tells bash to write output to file
+and not to the terminal
+4. ln -s tmpfile.txt ~/tmp-alias
+-links...
+5. ls -al
+-ls lists. -al will give more details. 
+such as ownership of files. -alh the h makes it
+human readable
+
+6. chmod a+rwx tmpfile.txt
+-change mode, a means all, every section get read, write, ect
+
+7. grep bash /etc/passwd
+-
+8. ps -ef | more
+-task manager. how many processes are running. bar (|) means 
+
+9. man 2 chown
+-manual, 
+10. gcc test.c 2> error-msg 
+-gcc is for compiling. error will be no such file in directory
+-three outputs 0 1 and 2
+-2 is for errors. if there is error than redirect it that file
