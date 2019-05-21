@@ -15,3 +15,4 @@ sarb:
 gurkanwar:
 -start on linked list functions
 -review string functions and add more test cases
+-discuss push and pull and forks with sarb
