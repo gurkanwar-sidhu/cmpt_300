@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	printf("Starting tests...\n");
 	
 	struct nodeStruct *head = NULL;
-	
+/*	
 	// Starting count:
 	assert(List_countNodes(head) == 0);
 	
@@ -46,8 +46,8 @@ int main(int argc, char** argv)
 	List_print(&head);
 
 	//Print those nodes
+*/
 
-/*
 	printf("Starting prof's tests...\n");
 	// Create 1 node:
 	struct nodeStruct* firstNode = List_createNode(0);
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 	current = current->next;
 	assert(current->item == -5);
 	assert(current->next == NULL);
-
+/*
 	// Sort and verify:
 	List_sort(&head);
 	current = head;
@@ -91,10 +91,10 @@ int main(int argc, char** argv)
 	current = head;
 	assert(current->item == -5);
 	assert(current->next == NULL);
-
-
-
 */
+
+
+
 	printf("\nExecution finished.\n");
 	return 0;
 }

@@ -54,8 +54,13 @@ int List_countNodes (struct nodeStruct *head){
 
 	int count = 0;
     if(head == NULL){
-        return count;
+        return 0;
     }
+
+	if(head->next == NULL){
+		return 1;
+	}
+
 	else{
 		struct nodeStruct *temp = malloc(sizeof(struct nodeStruct));
 		temp = head;
