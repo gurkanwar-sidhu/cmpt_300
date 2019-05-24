@@ -35,8 +35,7 @@ void List_insertHead (struct nodeStruct **headRef, struct nodeStruct *node){
  */
 void List_insertTail (struct nodeStruct **headRef, struct nodeStruct *node){
     
-	struct nodeStruct *temp = malloc(sizeof(struct nodeStruct));
-	temp = *headRef;
+	struct nodeStruct *temp = *headRef;
 
     while(temp->next != NULL){
         temp = temp->next;
@@ -62,8 +61,7 @@ int List_countNodes (struct nodeStruct *head){
 	}
 
 	else{
-		struct nodeStruct *temp = malloc(sizeof(struct nodeStruct));
-		temp = head;
+		struct nodeStruct *temp = head;
 
     	while(temp->next != NULL){
 			count++;
@@ -83,8 +81,7 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
 		return head;
 	}
 
-	struct nodeStruct *temp = malloc(sizeof(struct nodeStruct));
-	temp = head;
+	struct nodeStruct *temp = head;
 
 	while( temp->next != NULL){
 		
