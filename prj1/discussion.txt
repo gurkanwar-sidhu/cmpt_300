@@ -17,9 +17,9 @@ linked list:
 sarb:
 -polish up string functions
 -add more test cases
--help with linked list
+-help with linked list delete node function
 
 gurkanwar:
--start on linked list functions
 -review string functions and add more test cases
--discuss push and pull and forks with sarb
+-stuck debugging deletenode moving on to sortlist
+-finished prelimenary testing of other list functions add more tests later
