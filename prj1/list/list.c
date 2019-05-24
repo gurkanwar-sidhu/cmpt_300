@@ -86,7 +86,7 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
 	struct nodeStruct *temp = malloc(sizeof(struct nodeStruct));
 	temp = head;
 
-	while( temp->item != item){
+	while( temp->next != NULL){
 		
 		if( temp->item == item){
 			return temp;
