@@ -91,6 +91,10 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
 		temp = temp->next;
 	}
 
+	if( temp->item == item){
+			return temp;
+	}
+
  return NULL;	
 }
 
