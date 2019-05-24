@@ -37,6 +37,10 @@ void List_insertTail (struct nodeStruct **headRef, struct nodeStruct *node){
     
 	struct nodeStruct *temp = *headRef;
 
+	if(temp == NULL){
+		*headRef = node;
+	}
+
     while(temp->next != NULL){
         temp = temp->next;
     }
@@ -137,7 +141,28 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
  * Sort the list in ascending order based on the item field.
  * Any sorting algorithm is fine.
  */
-void List_sort (struct nodeStruct **headRef);
+void List_sort (struct nodeStruct **headRef){
+
+ if( *headRef != NULL ){
+
+	struct nodeStruct* first;
+	struct nodeStruct* second;
+	int temp;
+
+	for(first = *headRef; first->next != NULL; first = first->next){
+	
+		for(second = first->next; second != NULL; second = second->next){
+
+			if(first->item > second->item){
+				temp = first->item;
+				first->item = second->item;		
+				second->item = temp;
+			}
+		}
+	}
+ }
+ 
+}
 
 
 
