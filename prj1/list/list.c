@@ -51,7 +51,7 @@ void List_insertTail (struct nodeStruct **headRef, struct nodeStruct *node){
  */
 int List_countNodes (struct nodeStruct *head){
 
-	int count = 0;
+	
     if(head == NULL){
         return 0;
     }
@@ -59,16 +59,15 @@ int List_countNodes (struct nodeStruct *head){
 	if(head->next == NULL){
 		return 1;
 	}
+	
+	int count = 1;
+	struct nodeStruct *temp = head;
 
-	else{
-		struct nodeStruct *temp = head;
-
-    	while(temp->next != NULL){
-			count++;
-        	temp = temp->next;
-    	}
-    return count;
-	}
+    while(temp->next != NULL){
+		count++;
+        temp = temp->next;
+    }
+ return count;
 }
 
 
