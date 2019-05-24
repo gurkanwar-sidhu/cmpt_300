@@ -105,7 +105,32 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
  * List_findNode(). If the list contains only one node, the head of the list 
  * should be set to NULL.
  */
-void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node);
+void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
+
+	struct nodeStruct* temp = *headRef;
+
+	if( temp->next == NULL ){
+		free(temp);
+	}
+
+	struct nodeStruct* temp_1 = *headRef;
+	struct nodeStruct* temp_2 = temp_1->next;
+
+	while( temp_2 != node || temp_1->next != NULL || temp_2->next != NULL ){
+
+		if(temp_2 == node){
+			free(temp_2);
+			temp_1->next = temp_2->next;
+			temp_2 = temp_2->next;
+		}
+		
+		temp_1 = temp_2;
+		
+		if(temp_2->next != NULL){
+			temp_2 = temp_2->next;
+		}	
+	}
+}			
 
 
 /*
