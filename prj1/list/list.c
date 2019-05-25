@@ -110,24 +110,51 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
  * should be set to NULL.
  */
 void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
-
+	printf("fresh delete call\n");
 	struct nodeStruct* temp = *headRef;
 	//only one item
 	if( temp->next == NULL ){
+		printf("this?");
 		//check: are we sure that it has to be first one?
-		headRef = NULL; //check: not sure if this line is right?
+		*headRef = NULL; //check: not sure if this line is right?
 		free(temp);
 	
 	
 	}//deleting head with more than one item in list
 	else if(temp == node){
+		printf("or this?\n");
 		*headRef = temp->next;
 		free(temp);
 	}
-	//struct nodeStruct* temp_1 = *headRef;
-	//struct nodeStruct* temp_2 = temp_1->next;
+	else{
+		struct nodeStruct* temp_1 = *headRef;
+		struct nodeStruct* temp_2 = temp_1->next;
+		printf("should be -1: %d\n", temp_1->item);
+		while(temp_1->next != node && temp_1->next != NULL){
+			printf("Address of node: %p\n", (void *)temp_1);
+			printf("Address of delNode: %p\n", (void *)node);
+			printf("loop: %d\n", temp_1->item);
+			if(temp_1->next == node){
+				printf("found it\n");
+			}
+			//keep updating temp1 until temp->next points to node to delete or it points to NULL
+			temp_1= temp_1->next;
+		}
+		//make temp_2 the node to free/delete
+		temp_2 = temp_1->next;
+		//now make temp1 skip over the node to delete (point to what node beside node to delete)
+			//this should work when deleting last node too?
+		temp_1->next = temp_2->next;
+		//free the node to delete;
+		free(temp_2);
+	}
+	
+	
+	
+
 	/*
-	while( temp_2 != node || temp_1->next != NULL || temp_2->next != NULL ){
+	//check: this is your loop. see why its wrong :(
+	while( temp_2 != node || temp_1->next != NULL || temp_2->next != NULL ){ 
 
 
 		if(temp_2 == node){

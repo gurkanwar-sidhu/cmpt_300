@@ -58,7 +58,8 @@ int main(int argc, char** argv)
 	printf("TESTING :List_insertHead test passed\n");
 	List_print(&head);
 
-	// Insert tail:
+	// Insert tail: 
+	//check: add tail on empty list passes????
 	struct nodeStruct* lastNode = List_createNode(-5);
 	List_insertTail(&head, lastNode);
 	assert(List_countNodes(head) == 2);
@@ -111,7 +112,27 @@ int main(int argc, char** argv)
 	List_deleteNode(&head, onlyNode);
 	printf("size is %d\n",List_countNodes(head) );
 	assert(List_countNodes(head) == 0);
-	//deleting second element with 4 elements in array
+	//deleting third element with 4 elements in array
+		//first add 4 elements
+	struct nodeStruct* fourthNode = List_createNode(-4);
+	List_insertHead(&head, fourthNode);	
+	struct nodeStruct* thirdNode = List_createNode(-3);
+	List_insertHead(&head, thirdNode);
+	struct nodeStruct* secNode = List_createNode(-2);
+	List_insertHead(&head, secNode);
+	struct nodeStruct* first_Node = List_createNode(-1);
+	List_insertHead(&head, first_Node);
+	assert(List_countNodes(head) == 4);
+	List_print(&head);
+	printf("now deleting third element\n");
+		//deleting third element
+	struct nodeStruct *delThirdNode = List_findNode(head, -3);
+	//printf("this should be -3: %d\n", delThirdNode->item);
+	List_deleteNode(&head, delThirdNode);
+	List_print(&head);
+	assert(List_countNodes(head) == 3);
+	//struct nodeStruct *onlyNode = List_findNode(head, -5);
+	//List_deleteNode(&head, onlyNode);
 	//deleting last element with 4 element in array
 	//deleting last element with only 2 elements in array
 	//deleting element that does not exist
