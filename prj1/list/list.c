@@ -143,7 +143,7 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
  */
 void List_sort (struct nodeStruct **headRef){
 
- if( *headRef != NULL ){
+ /*if( *headRef != NULL ){
 
 	struct nodeStruct* first;
 	struct nodeStruct* second;
@@ -160,8 +160,35 @@ void List_sort (struct nodeStruct **headRef){
 			}
 		}
 	}
+ }*/
+
+ struct nodeStruct* temp = *headRef;
+
+ if( temp != NULL && temp->next != NULL && temp->next->next != NULL ){
+
+	struct nodeStruct* first;
+	struct nodeStruct* second;
+	struct nodeStruct* after;
+
+	for(first = *headRef; first->next != NULL; first = first->next){
+	
+		for(second = first->next; second != NULL; second = second->next){
+
+			if(first->item > second->item){
+				after = second->next;
+				temp = first;
+				first = second;
+				second = temp;
+				first->next = second;
+				second->next = after;
+			}
+		}
+	}
  }
- 
+
+ if(temp->next != NULL) 
+
+
 }
 
 
