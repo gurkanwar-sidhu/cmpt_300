@@ -56,6 +56,7 @@ int main(int argc, char** argv)
 	assert(List_findNode(head, 0) == firstNode);
 	assert(List_findNode(head, 1) == NULL);
 	printf("List_insertHead test passed\n");
+	List_print(&head);
 
 	// Insert tail:
 	struct nodeStruct* lastNode = List_createNode(-5);
@@ -65,7 +66,7 @@ int main(int argc, char** argv)
 	assert(List_findNode(head, -5) == lastNode);
 	assert(List_findNode(head, 1) == NULL);
 	printf("List_insertTail test passed\n");
-
+	List_print(&head);
 	// Verify list:
 	struct nodeStruct *current = head;
 	assert(current->item == 0);
@@ -74,8 +75,8 @@ int main(int argc, char** argv)
 	assert(current->item == -5);
 	assert(current->next == NULL);
 	printf("list verified\n");
-
-/*	// Sort and verify:
+	List_print(&head);
+	// Sort and verify:
 	List_sort(&head);
 	current = head;
 	assert(current->item == -5);
@@ -83,7 +84,8 @@ int main(int argc, char** argv)
 	current = current->next;
 	assert(current->item == 0);
 	assert(current->next == NULL);
-*/
+	List_print(&head);
+/*
 	// Delete
 	assert(List_countNodes(head) == 2); 
 	struct nodeStruct *nodeOf0 = List_findNode(head, 0);
@@ -94,7 +96,7 @@ int main(int argc, char** argv)
 	current = head;
 	assert(current->item == -5);
 	assert(current->next == NULL);
-
+*/
 
 
 
