@@ -25,7 +25,7 @@ struct nodeStruct* List_createNode(int item){
 
 void List_insertHead (struct nodeStruct **headRef, struct nodeStruct *node){
     
-	node->next = *headRef;
+	node->next = *headRef; 
 	*headRef = node;
 }
 
@@ -95,7 +95,7 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
 		temp = temp->next;
 	}
 
-	if( temp->item == item){
+	if( temp->item == item){ //check: this one is for last node im assuming?
 			return temp;
 	}
 
@@ -112,19 +112,27 @@ struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
 void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
 
 	struct nodeStruct* temp = *headRef;
-
+	//only one item
 	if( temp->next == NULL ){
+		//check: are we sure that it has to be first one?
+		headRef = NULL; //check: not sure if this line is right?
+		free(temp);
+	
+	
+	}//deleting head with more than one item in list
+	else if(temp == node){
+		*headRef = temp->next;
 		free(temp);
 	}
-
-	struct nodeStruct* temp_1 = *headRef;
-	struct nodeStruct* temp_2 = temp_1->next;
-
+	//struct nodeStruct* temp_1 = *headRef;
+	//struct nodeStruct* temp_2 = temp_1->next;
+	/*
 	while( temp_2 != node || temp_1->next != NULL || temp_2->next != NULL ){
+
 
 		if(temp_2 == node){
 			free(temp_2);
-			temp_1->next = temp_2->next;
+			temp_1->next = temp_2->next; //check: why try to access temp_2 after freeing
 			temp_2 = temp_2->next;
 		}
 		
@@ -133,7 +141,9 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
 		if(temp_2->next != NULL){
 			temp_2 = temp_2->next;
 		}	
+
 	}
+*/	
 }			
 
 
@@ -160,7 +170,8 @@ void List_sort (struct nodeStruct **headRef){
 			}
 		}
 	}
- }*/
+ }
+ */
 
  struct nodeStruct* temp = *headRef;
 
@@ -186,7 +197,7 @@ void List_sort (struct nodeStruct **headRef){
 	}
  }
 
- if(temp->next != NULL) 
+ //if(temp->next != NULL) 
 
 
 }
