@@ -94,7 +94,8 @@ int main(int argc, char** argv)
 
 	// Delete
 	printf("TESTING: List_delete()\n");
-	List_print(&head);
+	//****list should look like this for testing : 0, -5 
+	//List_print(&head);
 	assert(List_countNodes(head) == 2); 
 	//testing deleting head with 2 element array
 	struct nodeStruct *nodeOf0 = List_findNode(head, 0);
@@ -105,12 +106,11 @@ int main(int argc, char** argv)
 	current = head;
 	assert(current->item == -5);
 	assert(current->next == NULL);
-	
-	List_print(&head);
+	//List_print(&head);
 	//deleting head with one 1 element in array
+	assert(List_countNodes(head) == 1);
 	struct nodeStruct *onlyNode = List_findNode(head, -5);
 	List_deleteNode(&head, onlyNode);
-	printf("size is %d\n",List_countNodes(head) );
 	assert(List_countNodes(head) == 0);
 	//deleting third element with 4 elements in array
 		//first add 4 elements
@@ -123,20 +123,41 @@ int main(int argc, char** argv)
 	struct nodeStruct* first_Node = List_createNode(-1);
 	List_insertHead(&head, first_Node);
 	assert(List_countNodes(head) == 4);
-	List_print(&head);
-	printf("now deleting third element\n");
+	//List_print(&head);
 		//deleting third element
 	struct nodeStruct *delThirdNode = List_findNode(head, -3);
-	//printf("this should be -3: %d\n", delThirdNode->item);
 	List_deleteNode(&head, delThirdNode);
-	List_print(&head);
+	//List_print(&head);
 	assert(List_countNodes(head) == 3);
-	//struct nodeStruct *onlyNode = List_findNode(head, -5);
-	//List_deleteNode(&head, onlyNode);
-	//deleting last element with 4 element in array
+	assert(List_findNode(head, -3)==NULL);
+	//deleting last element with 3 element in array
+	assert(List_countNodes(head) == 3);
+	struct nodeStruct *delLastNode = List_findNode(head, -4);
+	List_deleteNode(&head, delLastNode);
+	assert(List_findNode(head, -4)==NULL);
+	assert(List_countNodes(head) == 2);
 	//deleting last element with only 2 elements in array
-	//deleting element that does not exist
-	//check: what happens if sent empty list? head is null? 
+	assert(List_countNodes(head) == 2);
+	struct nodeStruct *delAgainNode = List_findNode(head, -2);
+	List_deleteNode(&head, delAgainNode);
+	assert(List_findNode(head, -2)==NULL);
+	assert(List_countNodes(head) == 1);
+	struct nodeStruct *currentOnly = head;
+	assert(currentOnly->item == -1);
+	//deleting element that does not exist in array
+	assert(List_countNodes(head) == 1);
+	struct nodeStruct *randNode = List_createNode(55);
+	List_deleteNode(&head, randNode);
+	assert(List_countNodes(head) == 1);
+	struct nodeStruct *curr = head;
+	assert(curr->item == -1);
+	//List_print(&head);
+	//empty list is passed. Do nothing!!!!
+	struct nodeStruct *negOneNode = List_findNode(head, -1);
+	List_deleteNode(&head, negOneNode);
+	List_deleteNode(&head, negOneNode);
+	assert(List_countNodes(head) == 0);
+
 
 	printf("TESTING: List_delete() passed\n");
 
