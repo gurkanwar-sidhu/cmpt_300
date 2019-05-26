@@ -103,18 +103,18 @@ int main(int argc, char** argv)
 
 
 	//List_print(&head);
-	/*
+	
 	// Sort and verify:
 	printf("TESTING : sort");
-	List_sort(&head);
-	current = head;
-	assert(current->item == -5);
-	assert(current->next != NULL);
-	current = current->next;
-	assert(current->item == 0);
-	assert(current->next == NULL);
-	List_print(&head);
-	*/
+	List_sort(&headTestFind);
+	aNode1 = headTestFind;
+	assert(aNode1->item == -5);
+	assert(aNode1->next != NULL);
+	aNode1 = aNode1->next;
+	assert(aNode1->item == 0);
+	assert(aNode1->next == NULL);
+	List_print(&headTestFind);
+	
 
 	// Delete
 	printf("TESTING: List_delete()\n");
