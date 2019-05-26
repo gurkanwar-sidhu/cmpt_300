@@ -1,9 +1,4 @@
 
-Designer: creates a plan for implementation and coordinates activities of the group. Should create design docs (text files or markdown or equivalent only). Put these documents in the directory docs and mention the files in your README file.
-Code reviews: write a critical view of the implementation by the group. Points out what is missing, inelegant code, etc. and produces a code review document (text files or markdown or equivalent only). Put these documents in the directory docs and mention the files in your README file.
-Development: write the code. This can be done in collaboration.
-Testcases: write testcases to stress test the code. Provide the testcases in your submission.
-
 
 mystring:
 
@@ -11,15 +6,22 @@ mystring:
 
 
 linked list:
+-comments!!!
+-what strategy are you using on insertion sort?
+-maybe give links to what your referencing
 
 
 
 sarb:
 -polish up string functions
--add more test cases
 -help with linked list delete node function
+-add more test cases
+-lets submit sunday night
+-i'm going to work on other things now (raptors lol). look over things
+strings and list and let me know if anything obvious is missing.
+we'll also talk about sort if you have trouble with it
 
 gurkanwar:
 -review string functions and add more test cases
--stuck debugging deletenode moving on to sortlist
--finished prelimenary testing of other list functions add more tests later
+-do sort
+-double check testing and functions in general

@@ -86,13 +86,13 @@ int mystrcmp(const char *s1, const char *s2)
 		tmpS2 = s2[itr]; 
 	}
 
-	if(tmpS1 < tmpS2){ //if one word is longer than the other
+	if(mystrlen(&tmpS1) < mystrlen(&tmpS2)){ //if one word is longer than the other
 		return -1;
 	}
-	else if(tmpS1 > tmpS2){
+	else if(mystrlen(&tmpS1) > mystrlen(&tmpS2)){
 		return 1;
 	}
-	else if(tmpS1 == tmpS2){
+	else if(mystrlen(&tmpS1) == mystrlen(&tmpS2){
 		return 0;
 	}
 
