@@ -106,14 +106,28 @@ int main(int argc, char** argv)
 	
 	// Sort and verify:
 	printf("TESTING : sort");
-	List_sort(&headTestFind);
-	aNode1 = headTestFind;
+	struct nodeStruct *headTestSort = NULL;
+	assert(List_findNode(headTestSort, 1) == NULL);	
+	struct nodeStruct *sNode1 = List_createNode(1234);
+	List_insertTail(&headTestSort, sNode1);
+	struct nodeStruct *sNode2 = List_createNode(777);
+	List_insertTail(&headTestSort, sNode2);
+	struct nodeStruct *sNode3 = List_createNode(99);
+	List_insertTail(&headTestSort, sNode3);
+	struct nodeStruct *sNode4 = List_createNode(5);
+	List_insertTail(&headTestSort, sNode4);
+	struct nodeStruct *sNode5 = List_createNode(0);
+	List_insertTail(&headTestSort, sNode5);
+	List_print(&headTestSort);
+	assert(List_countNodes(headTestSort) == 5);
+	List_sort(&headTestSort);
+	/*sNode1 = headTestFind;
 	assert(aNode1->item == -5);
 	assert(aNode1->next != NULL);
 	aNode1 = aNode1->next;
 	assert(aNode1->item == 0);
-	assert(aNode1->next == NULL);
-	List_print(&headTestFind);
+	assert(aNode1->next == NULL);*/
+	List_print(&headTestSort);
 	
 
 	// Delete

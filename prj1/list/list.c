@@ -1,6 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 /*struct listStruct {
 	struct nodeStruct *head;
@@ -183,52 +184,61 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
  */
 void List_sort (struct nodeStruct **headRef){
 
- struct nodeStruct* temp = *headRef;
+ struct nodeStruct* head = *headRef;
 
- if( temp != NULL && temp->next != NULL ){
+ if( head != NULL && head->next != NULL ){
+	int count = List_countNodes(head);//count for nested for loop
+	struct nodeStruct* first;//first node
+	struct nodeStruct* second;//second node
+	struct nodeStruct* temp;//temporary place holder for node switch
 
-	struct nodeStruct* first;
-	struct nodeStruct* second;
-
-	for(first = *headRef; first->next != NULL; first = first->next){
-		int swap_chk = 0;
-	
-		for(second = first->next; second != NULL; second = second->next){
-
-			if(first->item > second->item){
-				temp = second->next;
-				second->next = first;		
-				first->next = temp;
-				swap_chk = 1;
+	for(int i = 0; i < count; i++){// runs # of node loops
+		int swap_chk = 0;//checks if there was a swap
+		first = head;
+		second = first->next;
+		for(int j = 1; j < count-i-1; j++){//runs from ith position to end of list
+			printf("first: %d\n", first->item);
+			second = second->next;// compares every node after first node
+			printf("second: %d\n", second->item); 
+			assert(first != NULL);
+			assert(second != NULL);
+			if(first->item > second->item){// checks if the prev node is bigger than the next node
+				temp = first;//set place holder to node 1
+				first = second;// node 1 equals node 2		
+				second = temp;// node 2 now equals node 1
+				swap_chk = 1;// confirm swap so the loop continues
 			}
+		 head = head->next;// moves head one node over
 		}
-		if( swap_chk == 0 ){
+		if( swap_chk == 0 ){// confirms all swaps happened and breaks out of loop
 			break;
 		}
 	}
  }
  
 
- /*struct nodeStruct* temp = *headRef;
+ 
+/*	struct nodeStruct* head = *headRef;
 
- if( temp != NULL && temp->next != NULL && temp->next->next != NULL ){
+ if( head != NULL && head->next != NULL ){
 
 	struct nodeStruct* first;
 	struct nodeStruct* second;
-	struct nodeStruct* after;
+	struct nodeStruct* temp;
 
-	for(first = *headRef; first->next != NULL; first = first->next){
-	
-		for(second = first->next; second != NULL; second = second->next){
+	for(first = head; first->next != NULL; first = first->next){//loop for first 
+		int swap_chk = 0;
+		for(second = first->next; second->next != NULL; second = second->next){
 
 			if(first->item > second->item){
-				after = second->next;
 				temp = first;
 				first = second;
 				second = temp;
-				first->next = second;
-				second->next = after;
+				swap_chk = 1;
 			}
+		}
+		if(swap_chk == 0){
+			break;
 		}
 	}
  }*/
