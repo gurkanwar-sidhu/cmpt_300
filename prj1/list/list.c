@@ -18,7 +18,6 @@ struct nodeStruct* List_createNode(int item){
     return newNode;
 }
 
-
 /*
  * Insert node at the head of the list.
  */
@@ -39,13 +38,17 @@ void List_insertTail (struct nodeStruct **headRef, struct nodeStruct *node){
 
 	if(temp == NULL){
 		*headRef = node;
+		node->next = NULL;
+	}
+	else{
+		while(temp->next != NULL){
+        temp = temp->next;
+		}
+		temp->next = node;
+		node->next = NULL;
 	}
 
-    while(temp->next != NULL){
-        temp = temp->next;
-    }
-    temp->next = node;
-	node->next = NULL;
+    
 }
 
 
@@ -79,25 +82,30 @@ int List_countNodes (struct nodeStruct *head){
  * Return the first node holding the value item, return NULL if none found
  */
 struct nodeStruct* List_findNode(struct nodeStruct *head, int item){
-
-	if(head->item == item){
+	if(head==NULL){ //for empty list
+		return NULL;
+	}
+	else{
+		if(head->item == item){
 		return head;
-	}
-
-	struct nodeStruct *temp = head;
-
-	while( temp->next != NULL){
-		
-		if( temp->item == item){
-			return temp;
 		}
-		
-		temp = temp->next;
-	}
 
-	if( temp->item == item){ //check: this one is for last node im assuming?
-			return temp;
+		struct nodeStruct *temp = head;
+
+		while( temp->next != NULL){
+			
+			if( temp->item == item){
+				return temp;
+			}
+			
+			temp = temp->next;
+		}
+
+		if( temp->item == item){ //check: this one is for last node im assuming?
+				return temp;
+		}
 	}
+	
 
  return NULL;	
 }
