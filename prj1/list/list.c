@@ -248,5 +248,108 @@ void List_sort (struct nodeStruct **headRef){
 
 }
 
+//check: remember to delete this function from header file**********************
+void List_Sarbsort (struct nodeStruct **headRef){
+	//DEMO 1******
+	/*
+	struct nodeStruct* head = *headRef;
+	if( head != NULL && head->next != NULL ){
+		//int count = List_countNodes(head);
+		struct nodeStruct* first = head->next;//first node
+		struct nodeStruct* prevFirst = head;//first node
+		struct nodeStruct* second = first->next;//second node
+		struct nodeStruct* prevSecond = first;//first node
+		struct nodeStruct* temp;//temporary place holder for node switch
 
+		while(second != NULL){// runs # of node loops
+			printf("comparing first %d", first->item);
+			//if(second != NULL){ //to avoid seg fault when second becomes null at end of array
+				printf(" and second %d\n", second->item);
+				if(first->item > second->item){
+					printf("swiiiiiiiitch\n");
+					
+					temp = second->next;
+					second->next = first->next; //step 1
+					first->next = temp; //step 2
+					temp = second->next; 
+					prevSecond->next = first; //step 3. prev of second now points to first
+					prevFirst->next = second; //step 4
+
+					temp = second;
+					second = first;
+					first = temp;
+					
+					
+
+				}
+
+
+				prevSecond = second;
+				second = second->next;
+				
+
+			//}
+			
+			
+		}
+	}
+	printf("\n\n");	
+	*/
+	// DEMO 1 ENDED
+
+	//DEMO 2******
+	
+	struct nodeStruct* head = *headRef;
+	if( head != NULL && head->next != NULL ){
+		//int count = List_countNodes(head);
+		struct nodeStruct* first = head;//first node
+		struct nodeStruct* prevFirst = NULL;//first node
+		struct nodeStruct* second = first->next;//second node
+		struct nodeStruct* prevSecond = first;//first node
+		struct nodeStruct* temp;//temporary place holder for node switch
+
+		while(second != NULL){// runs # of node loops
+			printf("comparing first %d", first->item);
+			//if(second != NULL){ //to avoid seg fault when second becomes null at end of array
+				printf(" and second %d\n", second->item);
+				if(first->item > second->item){
+					printf("swiiiiiiiitch\n");
+					
+					temp = second->next;
+					second->next = first->next; //step 1
+					first->next = temp; //step 2
+					temp = second->next; 
+					prevSecond->next = first; //step 3. prev of second now points to first
+					if(prevFirst ==NULL){
+						*headRef = second;
+						printf("this should be 4 : %d\n", head->item);
+						
+					}
+					else{
+						prevFirst->next = second; //step 4
+					}
+					
+
+					temp = second;
+					second = first;
+					first = temp;
+					
+					
+
+				}
+
+
+				prevSecond = second;
+				second = second->next;
+				
+
+			//}
+			
+			
+		}
+	}
+	printf("\n\n");	
+	
+	//DEMO 2 ENDED
+}
 

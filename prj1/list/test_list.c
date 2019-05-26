@@ -106,29 +106,51 @@ int main(int argc, char** argv)
 	
 	// Sort and verify:
 	printf("TESTING : sort");
+	/*//DEMO 1 *******
 	struct nodeStruct *headTestSort = NULL;
 	assert(List_findNode(headTestSort, 1) == NULL);	
-	struct nodeStruct *sNode1 = List_createNode(1234);
+	struct nodeStruct *sNod1 = List_createNode(1);
+	List_insertTail(&headTestSort, sNod1);
+	struct nodeStruct *sNode1 = List_createNode(5);
 	List_insertTail(&headTestSort, sNode1);
-	struct nodeStruct *sNode2 = List_createNode(777);
+	struct nodeStruct *sNode2 = List_createNode(6);
 	List_insertTail(&headTestSort, sNode2);
-	struct nodeStruct *sNode3 = List_createNode(99);
+	struct nodeStruct *sNode3 = List_createNode(4);
 	List_insertTail(&headTestSort, sNode3);
-	struct nodeStruct *sNode4 = List_createNode(5);
+	struct nodeStruct *sNode4 = List_createNode(10);
 	List_insertTail(&headTestSort, sNode4);
-	struct nodeStruct *sNode5 = List_createNode(0);
+	struct nodeStruct *sNode5 = List_createNode(3);
+	List_insertTail(&headTestSort, sNode5);
+	List_print(&headTestSort);
+	assert(List_countNodes(headTestSort) == 6);
+	//List_sort(&headTestSort);
+	List_Sarbsort(&headTestSort); //uncommented your sort
+	
+	List_print(&headTestSort);
+	
+	List_print(&headTestSort);
+	*/ //DEMO 1 ENDED****
+	//DEMO 2
+	struct nodeStruct *headTestSort = NULL;
+	assert(List_findNode(headTestSort, 1) == NULL);	
+	struct nodeStruct *sNode1 = List_createNode(5);
+	List_insertTail(&headTestSort, sNode1);
+	struct nodeStruct *sNode2 = List_createNode(6);
+	List_insertTail(&headTestSort, sNode2);
+	struct nodeStruct *sNode3 = List_createNode(4);
+	List_insertTail(&headTestSort, sNode3);
+	struct nodeStruct *sNode4 = List_createNode(10);
+	List_insertTail(&headTestSort, sNode4);
+	struct nodeStruct *sNode5 = List_createNode(3);
 	List_insertTail(&headTestSort, sNode5);
 	List_print(&headTestSort);
 	assert(List_countNodes(headTestSort) == 5);
-	List_sort(&headTestSort);
-	/*sNode1 = headTestFind;
-	assert(aNode1->item == -5);
-	assert(aNode1->next != NULL);
-	aNode1 = aNode1->next;
-	assert(aNode1->item == 0);
-	assert(aNode1->next == NULL);*/
-	List_print(&headTestSort);
+	//List_sort(&headTestSort);
+	List_Sarbsort(&headTestSort); //uncommented your sort
 	
+	List_print(&headTestSort);
+
+	//DEMO 2 ENDED
 
 	// Delete
 	printf("TESTING: List_delete()\n");
@@ -139,7 +161,7 @@ int main(int argc, char** argv)
 	aNode = List_createNode(0);
 	List_insertHead(&headTestDel, aNode);
 	//****list should look like this for testing : 0, -5 
-	List_print(&headTestDel);
+	//List_print(&headTestDel);
 	assert(List_countNodes(headTestDel) == 2); 
 	//testing deleting head with 2 element array
 	struct nodeStruct *nodeOf0 = List_findNode(headTestDel, 0);
