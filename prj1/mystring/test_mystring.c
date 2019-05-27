@@ -27,12 +27,12 @@ int main()
 	mystrcpy(buffer, "");
 	assert(strcmp(buffer,"") == 0 );
 	assert(strlen(buffer) == 0);
+	char teststr[mystrlen(buffer)];	
 	
 	//regular string copy
 	mystrcpy(buffer, "I am testing my string functions!");
-	assert(strcmp(buffer, "I am testing my string functions!") == 0);
-	
-
+	mystrcpy(teststr, buffer);
+	assert(strcmp(buffer, teststr) == 0);
 
 	//TESTING mystrcmp()
 	//check: order which words come in dictionary?

@@ -3,13 +3,6 @@
 #include <stdlib.h>
 
 /*
- *   Implement the following functions: 
- * 
- *   You are NOT allowed to use any standard string functions such as 
- *   strlen, strcpy or strcmp or any other string function.
- */
-
-/*
  *  mystrlen() calculates the length of the string s, 
  *  not including the terminating character '\0'.
  *  Returns: length of s.
@@ -24,7 +17,7 @@ int mystrlen (const char *s) //fix: empty strings?
 		count++;
 		temp = s[count];
 	}
-	return count;
+  return count;
 }
 
 /*
@@ -34,28 +27,14 @@ int mystrlen (const char *s) //fix: empty strings?
  */
 char  *mystrcpy (char *dst, const char *src)
 {
-		//find length of src string
-	int count =0;
-	char tmp = src[0];
-	while(tmp != '\0'){
-		count++;
-		tmp = src[count];
-		//printf("count is %d and char is %c\n", count, tmp);
-	}
-	//printf("length of string is %d", count);
-
-		//copy over chars to dst
-		
-	for(int i =0 ; i<count+1 ; i++){
-		//printf("copying over %c\n", src[i]);
+	//find length of src string
+	int count = mystrlen(src);
+	//copy over chars to dst		
+	for( int i = 0; i < count + 1; i++ ){
 		dst[i] = src[i];
 	}
-
-	//printf("string is %s\n", dst);
-	//printf("string is %s\n", src);
-
-	//printf("\n\n\n");
-	return NULL;
+  
+  return dst;
 }
 
 /*
@@ -80,23 +59,22 @@ int mystrcmp(const char *s1, const char *s2)
 				return 1;
 			}
 		}
-		//printf("tmpS1: %c and tmpS2 %c\n", tmpS1, tmpS2);
+
 		itr++;
 		tmpS1 = s1[itr];
 		tmpS2 = s2[itr]; 
 	}
 
-	if(mystrlen(&tmpS1) < mystrlen(&tmpS2)){ //if one word is longer than the other
+	if(mystrlen(&tmpS1) < mystrlen(&tmpS2)){// if string 1 is smaller than string 2
 		return -1;
 	}
-	else if(mystrlen(&tmpS1) > mystrlen(&tmpS2)){
+	else if(mystrlen(&tmpS1) > mystrlen(&tmpS2)){// if string 1 is larger than string 2
 		return 1;
 	}
-	else if(mystrlen(&tmpS1) == mystrlen(&tmpS2){
+	else if(mystrlen(&tmpS1) == mystrlen(&tmpS2)){// if both strings are equal in size
 		return 0;
 	}
-
-	return 0;
+  return 0;
 }
 
 /*
@@ -109,27 +87,16 @@ int mystrcmp(const char *s1, const char *s2)
  */
 char *mystrdup(const char *s1)
 {
-	
-		//find how big s1 is
-	int count =0;
-	char tmp = s1[0];
-	while(tmp != '\0'){
-		count++;
-		tmp = s1[count];
-		//printf("count is %d and char is %c\n", count, tmp);
-	}
-
-		//malloc space in new pointer
+	//find how big s1 is
+	int count = mystrlen(s1);
+	//allocate space in new pointer
 	char* strDup = (char*) malloc(count+1 *sizeof(char));
 	if(strDup == NULL){
 		return 	NULL; 
 	}
-		//copy string over 
-	//printf("\n\n\n");	
-	for(int i =0 ; i< count+1 ; i++){
+	//copy string over 
+	for( int i = 0; i < count + 1; i++ ){
 		strDup[i] = s1[i];
-		
-		//printf(" %c", strDup[i]);
 	}	
 
 	return strDup;
