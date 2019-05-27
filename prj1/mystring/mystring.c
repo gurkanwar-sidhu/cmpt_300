@@ -96,7 +96,6 @@ char *mystrdup(const char *s1)
 	}
 	//copy string over
 	mystrcpy(strDup, s1); 
-	
 
 	return strDup;
 }
