@@ -85,7 +85,7 @@ make all
 
 * **Sarbjot Singh**  - [sarbjot-14](https://github.com/sarbjot-14)
 
-* **Gurkanwar Sidhu** - [gurkanwar-sidhu](https://github.com/gurkanwar-sidhu)
+* **Gurkanwar Sidhu** - [gss28](https://github.com/gurkanwar-sidhu){301290044)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
