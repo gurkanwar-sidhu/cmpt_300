@@ -54,7 +54,4 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node);
  */
 void List_sort (struct nodeStruct **headRef);
 
-void List_Sarbsort (struct nodeStruct **headRef);
-
-void List_SarbsortDemo3 (struct nodeStruct **headRef);
 #endif
