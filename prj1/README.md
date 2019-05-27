@@ -13,16 +13,19 @@ Project involves basic review of C programming, which includes arrays, strings, 
 #### Design Decisions:
 1. int   mystrlen (const char *s);
     * simple while loop to count letter until reaches '\0'
+    
 2. char* mystrcpy (char *dst, const  char *src);
     * copy string to tmp array and then transfer tmp array to destination array
     * decided a two stop process would be simpler
+    
 3. int   mystrcmp (const char *s1,const char *s2);
     * use while loop to see if any letter is more than or less than corresponding letters in other string
     * if both words are same up to a point, but one is longer use mystrlen() to compare words
+    
 4. char* mystrdup (const char *src);
-   * use while loop to find length of string
+   * use mystrlen() to find length of string
    * malloc space in new array
-   * copy array with for loop
+   * copy array with mystrcpy()
 
 #### Project Issues:
    * Not too many issues. Used stack overflow when confused about dynamic memory allocation and pointers.  
@@ -63,8 +66,12 @@ make all
      * use tmp pointer to store node to delete
      * update pointers to skip node to delete
      * use temp pointer to free space of tmp pointer
+     
 7. void List_sort (struct nodeStruct **headRef);
-
+     * For lists that are not empty or only one node long
+     * In a nested for loop compare the first node item with the rest
+     * Switching item values whenever the item on the left is greater than the right
+     * Continue doing so for n^2 - 1 iterations
 
 #### Project Issues:
    * Occasional segmenation faults occured, for example when unintentionally accessing NULL pointer
@@ -77,8 +84,6 @@ To run the test on functions in mystring/mystring.c compile the mystring/Makefil
 '''
 make all
 '''
-
-
 
 
 ## Authors
