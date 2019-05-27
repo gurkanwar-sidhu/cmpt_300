@@ -114,6 +114,7 @@ int main(int argc, char** argv)
 	List_insertTail(&headTestSort, sNode1);
 	struct nodeStruct *sNode2 = List_createNode(0);
 	List_insertTail(&headTestSort, sNode2);
+	//assert(List_countNodes(headTestSort) == 2);
 	struct nodeStruct *sNode3 = List_createNode(777);
 	List_insertTail(&headTestSort, sNode3);
 	struct nodeStruct *sNode4 = List_createNode(99);

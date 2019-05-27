@@ -149,8 +149,8 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node){
  * Any sorting algorithm is fine.
  */
 void List_sort (struct nodeStruct **headRef){
-
-	struct nodeStruct* head = *headRef;
+//Sort through switching nodes>
+/*	struct nodeStruct* head = *headRef;
 	
 	if( head != NULL && head->next != NULL ){
 		
@@ -196,4 +196,26 @@ void List_sort (struct nodeStruct **headRef){
 			second = first->next;// increment second node
 		}	
 	}
+//end<
+*/
+//Sort through switching values>
+
+if( *headRef != NULL ){
+
+	struct nodeStruct* first;
+	struct nodeStruct* second;
+	int temp;
+
+	for(first = *headRef; first->next != NULL; first = first->next){
+
+		for(second = first->next; second != NULL; second = second->next){
+			if(first->item > second->item){
+				temp = first->item;
+				first->item = second->item;		
+				second->item = temp;
+			}
+		}
+	}
+ }
+//end<
 }
