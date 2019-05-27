@@ -94,10 +94,9 @@ char *mystrdup(const char *s1)
 	if(strDup == NULL){
 		return 	NULL; 
 	}
-	//copy string over 
-	for( int i = 0; i < count + 1; i++ ){
-		strDup[i] = s1[i];
-	}	
+	//copy string over
+	mystrcpy(strDup, s1); 
+	
 
 	return strDup;
 }
