@@ -83,7 +83,7 @@ make all
 
 ## Authors
 
-* **Sarbjot Singh**  - [sarbjot-14](https://github.com/sarbjot-14)
+* **Sarbjot Singh**  - [sarbjot-14](https://github.com/sarbjot-14){301313399}
 
 * **Gurkanwar Sidhu** - [gss28](https://github.com/gurkanwar-sidhu){301290044)
 
