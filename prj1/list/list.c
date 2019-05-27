@@ -255,53 +255,6 @@ void List_Sarbsort (struct nodeStruct **headRef){
 	struct nodeStruct* head = *headRef;
 	if( head != NULL && head->next != NULL ){
 		//int count = List_countNodes(head);
-		struct nodeStruct* first = head->next;//first node
-		struct nodeStruct* prevFirst = head;//first node
-		struct nodeStruct* second = first->next;//second node
-		struct nodeStruct* prevSecond = first;//first node
-		struct nodeStruct* temp;//temporary place holder for node switch
-
-		while(second != NULL){// runs # of node loops
-			printf("comparing first %d", first->item);
-			//if(second != NULL){ //to avoid seg fault when second becomes null at end of array
-				printf(" and second %d\n", second->item);
-				if(first->item > second->item){
-					printf("swiiiiiiiitch\n");
-					
-					temp = second->next;
-					second->next = first->next; //step 1
-					first->next = temp; //step 2
-					temp = second->next; 
-					prevSecond->next = first; //step 3. prev of second now points to first
-					prevFirst->next = second; //step 4
-
-					temp = second;
-					second = first;
-					first = temp;
-					
-					
-
-				}
-
-
-				prevSecond = second;
-				second = second->next;
-				
-
-			//}
-			
-			
-		}
-	}
-	printf("\n\n");	
-	*/
-	// DEMO 1 ENDED
-
-	//DEMO 2******
-	
-	struct nodeStruct* head = *headRef;
-	if( head != NULL && head->next != NULL ){
-		//int count = List_countNodes(head);
 		struct nodeStruct* first = head;//first node
 		struct nodeStruct* prevFirst = NULL;//first node
 		struct nodeStruct* second = first->next;//second node
@@ -346,7 +299,130 @@ void List_Sarbsort (struct nodeStruct **headRef){
 		}
 	}
 	printf("\n\n");	
+	*/
+	// DEMO 1 ENDED
+
+	//DEMO 2****** use demo 33333333
+	
+	struct nodeStruct* head = *headRef;
+	if( head != NULL && head->next != NULL ){
+		//int count = List_countNodes(head);
+		struct nodeStruct* first = head;//first node
+		struct nodeStruct* prevFirst = NULL;//first node
+		struct nodeStruct* second = first->next;//second node
+		struct nodeStruct* prevSecond = first;//first node
+		struct nodeStruct* temp;//temporary place holder for node switch
+
+		while(second != NULL){// runs # of node loops
+			printf("comparing first %d and second %d\n", first->item,  second->item);
+		
+				if(first->item > second->item){ //keeping first the same for now. will have to update once we use second for loop
+					if(first->next == second){
+						printf("THIS IS THE SPECIAL CASE SWITCH THEY ARE BESIDE EACH OTHER\n");
+
+						first->next = second->next;
+						second->next= first;
+						
+
+					}
+					else{
+						printf("swiiiiiiiitch\n");
+						
+						temp = second->next;
+						second->next = first->next; //step 1, make second point to what first was pointing to
+						first->next = temp; //step 2, make first point to what second was pointing to
+						temp = second->next; 
+						prevSecond->next = first; //step 3. prev of second now points to first
+					}	
+						//step 4, make prevFirst point to second
+						if(prevFirst ==NULL){ //this is for only the first iteration. when prevFirst is NULL. cause its before head
+							*headRef = second;
+							//printf("this should be 4 : %d\n", head->item);
+							
+						}
+						else{
+							prevFirst->next = second; //step 4  regular case
+						}
+						
+					//update first and seconds
+					temp = second;
+					second = first;
+					first = temp;
+					
+					
+					
+					
+
+				}
+
+				//update prevSecond
+				prevSecond = second;
+				second = second->next;
+				
+			
+			
+		}
+	}
+	printf("\n\n");	
 	
 	//DEMO 2 ENDED
 }
 
+
+void List_SarbsortDemo3 (struct nodeStruct **headRef){
+
+	struct nodeStruct* head = *headRef;
+	if( head != NULL && head->next != NULL ){
+		//int count = List_countNodes(head);
+		struct nodeStruct* first = head;//first node
+		struct nodeStruct* prevFirst = NULL;//first node
+		struct nodeStruct* second = first->next;//second node
+		struct nodeStruct* prevSecond = first;//first node
+		struct nodeStruct* temp;//temporary place holder for node switch
+
+		while(second!= NULL){
+			while(second != NULL){// runs # of node loops
+				printf("comparing first %d and second %d\n", first->item,  second->item);
+				if(first->item > second->item){ //keeping first the same for now. will have to update once we use second for loop
+					if(first->next == second){
+						printf("THIS IS THE SPECIAL CASE SWITCH THEY ARE BESIDE EACH OTHER\n");
+						first->next = second->next;
+						second->next= first;
+					}
+					else{
+						printf("swiiiiiiiitch\n");
+						temp = second->next;
+						second->next = first->next; //step 1, make second point to what first was pointing to
+						first->next = temp; //step 2, make first point to what second was pointing to
+						temp = second->next; 
+						prevSecond->next = first; //step 3. prev of second now points to first
+					}	
+						//step 4, make prevFirst point to second
+						if(prevFirst ==NULL){ //this is for only the first iteration. when prevFirst is NULL. cause its before head
+							*headRef = second;
+							//printf("this should be 4 : %d\n", head->item);
+						}
+						else{
+							prevFirst->next = second; //step 4  regular case
+						}
+						
+					//update first and seconds
+					temp = second;
+					second = first;
+					first = temp;
+				}
+
+				//update prevSecond
+				prevSecond = second;
+				second = second->next;
+				
+			}			
+			prevFirst = first;
+			first = first ->next;
+			prevSecond = first;
+			second = first->next;
+		
+		}	
+	}
+	printf("\n\n");	
+}
