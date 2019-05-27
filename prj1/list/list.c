@@ -309,7 +309,7 @@ void List_Sarbsort (struct nodeStruct **headRef){
 		struct nodeStruct* temp;//temporary place holder for node switch
 
 		while(second != NULL){// runs # of node loops
-			printf("comparing first %d and second %d\n", first->item, , second->item);
+			printf("comparing first %d and second %d\n", first->item,  second->item);
 		
 				if(first->item > second->item){ //keeping first the same for now. will have to update once we use second for loop
 					printf("swiiiiiiiitch\n");
@@ -322,7 +322,7 @@ void List_Sarbsort (struct nodeStruct **headRef){
 					//step 4, make prevFirst point to second
 					if(prevFirst ==NULL){ //this is for only the first iteration. when prevFirst is NULL. cause its before head
 						*headRef = second;
-						printf("this should be 4 : %d\n", head->item);
+						//printf("this should be 4 : %d\n", head->item);
 						
 					}
 					else{
