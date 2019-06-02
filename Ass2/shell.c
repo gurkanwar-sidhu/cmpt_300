@@ -18,9 +18,48 @@
  * in_background: pointer to a boolean variable. Set to true if user entered
  *       an & as their last token; otherwise set to false.
  */
+
+/*
+check:
+take string in buffer and insert each string in the
+string array tokens[] ????
+*/
+int tokenize_command(char *buff, char *tokens[] ){
+    printf("what");
+    return 0;
+}
+
+
 void read_command(char *buff, char *tokens[], _Bool *in_background)
 {
-	// ... Full code available in section 8 (Resources) of this page (in shell.c)...
+    //check : got this from section 8
+    *in_background = false;
+
+	// Read input
+	int length = read(STDIN_FILENO, buff, COMMAND_LENGTH-1);
+
+	if (length < 0) {
+		perror("Unable to read command from keyboard. Terminating.\n");
+		exit(-1);
+	}
+
+	// Null terminate and strip \n.
+	buff[length] = '\0';
+	if (buff[strlen(buff) - 1] == '\n') {
+		buff[strlen(buff) - 1] = '\0';
+	}
+
+	// Tokenize (saving original command string)
+	int token_count = tokenize_command(buff, tokens);
+	if (token_count == 0) {
+		return;
+	}
+
+	// Extract if running in background:
+	if (token_count > 0 && strcmp(tokens[token_count - 1], "&") == 0) {
+		*in_background = true;
+		tokens[token_count - 1] = 0;
+	}
 }
 
 /**
@@ -38,7 +77,7 @@ int main(int argc, char* argv[])
 		write(STDOUT_FILENO, "> ", strlen("> "));
 		_Bool in_background = false;
 		read_command(input_buffer, tokens, &in_background);
-
+        printf("is this the buffer %s", input_buffer);
 		/**
 		 * Steps For Basic Shell:
 		 * 1. Fork a child process
