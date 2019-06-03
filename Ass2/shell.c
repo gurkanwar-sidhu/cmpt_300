@@ -25,7 +25,33 @@ take string in buffer and insert each string in the
 string array tokens[] ????
 */
 int tokenize_command(char *buff, char *tokens[] ){
-    printf("what");
+    int i = 0;
+    int aStrI = 0;
+    int tokenI = 0;
+    write(STDOUT_FILENO, buff, strlen(buff));
+    write(STDOUT_FILENO, "\n", strlen("\n"));
+    char *aString;
+    while(buff[i]!= '\0'){
+        memset(aString, 0, sizeof(aString));
+        while(buff[i]!= ' ' && buff[i] !='\0' ){
+            aString[aStrI]= buff[i];
+            i++;
+            aStrI++;
+        }
+        //check : these two lines work
+        write(STDOUT_FILENO, aString, strlen(aString));
+        write(STDOUT_FILENO, "\n", strlen("\n"));
+        //check : these two lines don't
+        //tokens[tokenI] = (char*)malloc(sizeof(char)*strlen(aString));
+        //strcpy(tokens[tokenI], aString);
+        aStrI=0;
+        i++;
+        tokenI++;
+        
+        
+    }
+    
+    
     return 0;
 }
 
@@ -77,7 +103,7 @@ int main(int argc, char* argv[])
 		write(STDOUT_FILENO, "> ", strlen("> "));
 		_Bool in_background = false;
 		read_command(input_buffer, tokens, &in_background);
-        printf("is this the buffer %s", input_buffer);
+        
 		/**
 		 * Steps For Basic Shell:
 		 * 1. Fork a child process
