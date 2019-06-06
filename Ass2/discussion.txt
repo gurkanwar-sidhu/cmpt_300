@@ -1,7 +1,12 @@
 To Do:
-
+Team:
+    -double check how to run background process
+    -run tests for background process (email ta if needed)
+    -improve error messages
+    -use malloc to allocate for strings?
+    -at what point do we add to history? what if errors?
 Sarb:
-    -finish tokens and makefile
-    -
+    -make print funcition
+ 
 Gurk:
     -
