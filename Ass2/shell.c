@@ -18,7 +18,7 @@
 #define HISTORY_DEPTH 10
 
 char history[HISTORY_DEPTH][COMMAND_LENGTH];
-int history_count = 1; //keep track of history command number
+int history_count = 0; //keep track of history command number
 int global; 
 pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
@@ -33,16 +33,19 @@ char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/ques
  */
  // Add command to history, 
 void add_history(char *hist_buff ){
-	//history[history_count] = (char*) malloc(history_count+1 *sizeof(char));
-	int i = history_count % 11;
-	i--;
-	strcpy(history[i], hist_buff);
-	
-	write(STDOUT_FILENO, history[i], strlen(history[i]));
-	write(STDOUT_FILENO, " adding to history\n", strlen("adding to history\n"));
 
+	char hist_num[50];
+	int i = history_count % 10; //we are wrapping around rather than shifting, using modulus
 	history_count++;
-	
+	strcpy(history[i], hist_buff);
+	sprintf(hist_num,"here %d\t%s \n", history_count, history[i]);
+	write(STDOUT_FILENO, hist_num, strlen(hist_num));
+
+	//for debuggin
+	//write(STDOUT_FILENO, "adding to history\n\n", strlen("adding to history\n\n"));
+
+	memset(hist_num,0,50);// reset array, idk if this is needed
+
 }
 
  // Retrieve command (copy into buffer, likely),
@@ -53,21 +56,28 @@ char * retrieve_history_cmd(){
 */
  // Printing the last ten commands to the screen.
  void print_history(){
+	 char hist_num[50];
+	 int temp_hist_count= 1; //dont want to touch actual history count, this is for printing
+	 int i = (history_count+10) % 10;  // which string to print. it will wrap around
 	write(STDOUT_FILENO, "HISTORY: \n", strlen("HISTORY: \n"));
 	//write(STDOUT_FILENO, history[0], strlen(history[0]));
 
+	if(history_count <= 11){ //start at begginning if less than 10 
+		temp_hist_count = 1;
+		i =0;
+	}
+	else{ //most of the cases, above 10 commands
+		temp_hist_count = history_count-9;
+	}
+	while(temp_hist_count-1 != history_count){ //while we dont reach recent command
+		sprintf(hist_num,"print %d \t%s\n", temp_hist_count, history[i]);
+		write(STDOUT_FILENO, hist_num, strlen(hist_num));
 	
-	 for(int i =0; i<10;i++){
-		 if(i== history_count-1){
-			 break;
-		 }
-		//write(STDOUT_FILENO, history_count, sizeof(int));
-		write(STDOUT_FILENO, history[i], strlen(history[i]));
-		write(STDOUT_FILENO, "\n", strlen("\n"));
-
-
-	 }
-
+		temp_hist_count++;
+		memset(hist_num,0,50);
+		i++;
+		i = i% 10; //remember to wrap around using modulus
+	}
 
  }
 
@@ -129,8 +139,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 	// Read input
 	int length = read(STDIN_FILENO, buff, COMMAND_LENGTH-1);
-	//add command to history
-	add_history(buff); //check had to put it here cause after it gets messed up
+	
 	if (length < 0) {
 		perror("Unable to read command from keyboard. Terminating.\n");
 		exit(-1);
@@ -141,7 +150,8 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
 	}
-
+	//add command to history
+	add_history(buff); //check had to put it here cause after it gets messed up
 	// Tokenize (saving original command string)
 	int token_count = tokenize_command(buff, tokens);
 	if (token_count == 0) {
