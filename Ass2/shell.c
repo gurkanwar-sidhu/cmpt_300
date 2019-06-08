@@ -39,7 +39,7 @@ void add_history(char *hist_buff ){
 	history_count++;
 	strcpy(history[i], hist_buff);
 	sprintf(hist_num,"here %d\t%s \n", history_count, history[i]);
-	write(STDOUT_FILENO, hist_num, strlen(hist_num));
+	//write(STDOUT_FILENO, hist_num, strlen(hist_num));
 
 	//for debuggin
 	//write(STDOUT_FILENO, "adding to history\n\n", strlen("adding to history\n\n"));
@@ -150,8 +150,48 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
 	}
-	//add command to history
-	add_history(buff); //check had to put it here cause after it gets messed up
+
+	// ******retrieve and add history stuff **********//check
+	/*
+	I was thinking putting all this code inside the retrieve function.
+	that function can return the retrieved buff into the buff here.
+	for error handling i was thinking replacing buff with key words
+	then when the key word is read in the main while loop we print the
+	error ..........
+	*/
+	char justNum[50];
+	if(buff[0]=='!' && buff[1] == '!'){	//run prev command
+		///write(STDOUT_FILENO, "running previous command\n", strlen("running previous command\n"));
+		if(history_count >= 1){
+			strcpy(buff, history[history_count-1]); //new buff is pulled from history
+			add_history(buff); 
+		}
+		else{
+			//check : error handling
+		}
+	}
+	else if(buff[0]== '!'){
+		
+
+		strcpy(justNum, &buff[1]);
+		int run_prev = atoi(justNum); //get the number to run
+		char hist_num[50];
+		sprintf(hist_num,"running this number in history %d\n", run_prev);
+		//write(STDOUT_FILENO, hist_num, strlen(hist_num));
+		if(run_prev<= history_count && run_prev>0){
+			run_prev--;
+			strcpy(buff, history[run_prev]); //pullng new command from history
+			add_history(buff);
+		}
+		else{
+			//check: error handling
+		}
+	}
+	else{ //regular case
+		//add command to history
+		add_history(buff); //check had to put it here cause after it gets messed up
+	}
+	
 	// Tokenize (saving original command string)
 	int token_count = tokenize_command(buff, tokens);
 	if (token_count == 0) {
@@ -244,7 +284,7 @@ int main(int argc, char* argv[])
 			if(childpid >= 0){ //fork successful
 				if(childpid == 0){
 					//this is child
-					write(STDOUT_FILENO, "child\n", strlen("child\n"));
+					//write(STDOUT_FILENO, "child\n", strlen("child\n"));
 
 					if(execvp(tokens[0], tokens) == -1){
 						write(STDOUT_FILENO, "exec failed\n", strlen("exec failed\n"));
@@ -254,7 +294,7 @@ int main(int argc, char* argv[])
 				}
 				else{
 					//this is parent
-					write(STDOUT_FILENO, "parent\n", strlen("parent\n"));
+					//write(STDOUT_FILENO, "parent\n", strlen("parent\n"));
 					if(in_background){
 						//do not wait for child to end and continue other tasks
 						//exit(0);
