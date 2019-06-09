@@ -6,6 +6,7 @@ Team:
     -use malloc to allocate for strings?
     -at what point do we add to history? what if errors?
 Sarb:
+    -seg fault when ! more than 11
     -make print funcition
     -test memory leak with vangrind
     -read file
@@ -15,3 +16,13 @@ Gurk:
     -get rid of token output
     -fix sig int 
     -enter seg fault
+
+
+
+ls
+    print the directory
+!1
+    ls
+    print directory
+
+ !7\0   

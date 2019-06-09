@@ -164,10 +164,12 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	error ..........
 	*/
 	char justNum[50];
+	int i= 0;
 	if(buff[0]=='!' && buff[1] == '!'){	//run prev command
 		
 		if(history_count >= 1){
-			strcpy(buff, history[history_count-1]);
+			i = (history_count+9) % 10;
+			strcpy(buff, history[i]);
 			write(STDOUT_FILENO, buff, strlen(buff));
 			write(STDOUT_FILENO, "\n", strlen("\n")); //new buff is pulled from history
 			add_history(buff); 
@@ -179,15 +181,16 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 	else if(buff[0]== '!'){
 		
-
+		
 		strcpy(justNum, &buff[1]);
 		int run_prev = atoi(justNum); //get the number to run
 		/*char hist_num[50];
 		sprintf(hist_num,"running this number in history %d\n", run_prev);
 		write(STDOUT_FILENO, hist_num, strlen(hist_num));*/
 		if(run_prev<= history_count && run_prev>0){
-			run_prev--;
-			strcpy(buff, history[run_prev]);
+			//run_prev--;
+			i = (run_prev +9) % 10;
+			strcpy(buff, history[i]);
 			write(STDOUT_FILENO, buff, strlen(buff));
 			write(STDOUT_FILENO, "\n", strlen("\n")); //pullng new command from history
 			add_history(buff);
