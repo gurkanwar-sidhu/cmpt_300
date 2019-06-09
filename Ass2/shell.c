@@ -10,8 +10,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <linux/limits.h>
-
-
+#include <errno.h>
+#include <signal.h>
 
 #define COMMAND_LENGTH 1024
 #define NUM_TOKENS (COMMAND_LENGTH / 2 + 1)
@@ -28,7 +28,7 @@ char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/ques
 /**
  * Command Input and Processing
  */
- /*
+  /*
 	History Commands:
  */
  // Add command to history, 
@@ -45,6 +45,7 @@ void add_history(char *hist_buff ){
 	//write(STDOUT_FILENO, "adding to history\n\n", strlen("adding to history\n\n"));
 
 	memset(hist_num,0,50);// reset array, idk if this is needed
+	//check: Can't you just free the array as it is redeclared every time the function is called?
 
 }
 
@@ -70,7 +71,7 @@ char * retrieve_history_cmd(){
 		temp_hist_count = history_count-9;
 	}
 	while(temp_hist_count-1 != history_count){ //while we dont reach recent command
-		sprintf(hist_num,"print %d \t%s\n", temp_hist_count, history[i]);
+		sprintf(hist_num," %d \t%s\n", temp_hist_count, history[i]);
 		write(STDOUT_FILENO, hist_num, strlen(hist_num));
 	
 		temp_hist_count++;
@@ -79,6 +80,11 @@ char * retrieve_history_cmd(){
 		i = i% 10; //remember to wrap around using modulus
 	}
 
+ }
+
+ void handle_SIGINT(){
+
+ 		print_history();
  }
 
 /*
@@ -140,9 +146,9 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	// Read input
 	int length = read(STDIN_FILENO, buff, COMMAND_LENGTH-1);
 	
-	if (length < 0) {
-		perror("Unable to read command from keyboard. Terminating.\n");
-		exit(-1);
+	if ( (length < 0) && (errno != EINTR) ) {
+		perror("Unable to read command. Terminating.\n");
+		exit(-1); //terminate with error
 	}
 
 	// Null terminate and strip \n.
@@ -170,6 +176,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			//check : error handling
 		}
 	}
+
 	else if(buff[0]== '!'){
 		
 
@@ -187,6 +194,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			//check: error handling
 		}
 	}
+
 	else{ //regular case
 		//add command to history
 		add_history(buff); //check had to put it here cause after it gets messed up
@@ -313,7 +321,16 @@ int main(int argc, char* argv[])
 
 			}
 		 }
+	/* signal handling: ^C or SIGINT */
+
+		struct sigaction handler; //make strcut for sigaction called handler
 		
+			handler.sa_handler = handle_SIGINT;//calls function to handle SIGINT
+			handler.sa_flags = 0;// resets flag
+		
+		sigemptyset(&handler.sa_mask);// ignore all other signals
+		
+		sigaction(SIGINT, &handler, NULL);		
 
 	}
 	return 0;
