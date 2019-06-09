@@ -7,6 +7,10 @@ Team:
     -at what point do we add to history? what if errors?
 Sarb:
     -make print funcition
+    -make 
  
 Gurk:
-    -
+    -cd errors  
+    -get rid of token output
+    -fix sig int 
+    -enter seg fault
