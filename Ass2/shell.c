@@ -60,8 +60,6 @@ char * retrieve_history_cmd(){
 	 char hist_num[50];
 	 int temp_hist_count= 1; //dont want to touch actual history count, this is for printing
 	 int i = (history_count+10) % 10;  // which string to print. it will wrap around
-	write(STDOUT_FILENO, "HISTORY: \n", strlen("HISTORY: \n"));
-	//write(STDOUT_FILENO, history[0], strlen(history[0]));
 
 	if(history_count <= 10){ //start at begginning if less than 10 
 		temp_hist_count = 1;
@@ -167,9 +165,11 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	*/
 	char justNum[50];
 	if(buff[0]=='!' && buff[1] == '!'){	//run prev command
-		///write(STDOUT_FILENO, "running previous command\n", strlen("running previous command\n"));
+		
 		if(history_count >= 1){
-			strcpy(buff, history[history_count-1]); //new buff is pulled from history
+			strcpy(buff, history[history_count-1]);
+			write(STDOUT_FILENO, buff, strlen(buff));
+			write(STDOUT_FILENO, "\n", strlen("\n")); //new buff is pulled from history
 			add_history(buff); 
 		}
 		else{
@@ -182,12 +182,14 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 		strcpy(justNum, &buff[1]);
 		int run_prev = atoi(justNum); //get the number to run
-		char hist_num[50];
+		/*char hist_num[50];
 		sprintf(hist_num,"running this number in history %d\n", run_prev);
-		//write(STDOUT_FILENO, hist_num, strlen(hist_num));
+		write(STDOUT_FILENO, hist_num, strlen(hist_num));*/
 		if(run_prev<= history_count && run_prev>0){
 			run_prev--;
-			strcpy(buff, history[run_prev]); //pullng new command from history
+			strcpy(buff, history[run_prev]);
+			write(STDOUT_FILENO, buff, strlen(buff));
+			write(STDOUT_FILENO, "\n", strlen("\n")); //pullng new command from history
 			add_history(buff);
 		}
 		else{
@@ -235,14 +237,14 @@ int main(int argc, char* argv[])
 		read_command(input_buffer, tokens, &in_background);
 
 		// DEBUG: Dump out arguments:
-		for (int i = 0; tokens[i] != NULL; i++) {
+		/*for (int i = 0; tokens[i] != NULL; i++) {
 			write(STDOUT_FILENO, "   Token: ", strlen("   Token: "));
 			write(STDOUT_FILENO, tokens[i], strlen(tokens[i]));
 			write(STDOUT_FILENO, "\n", strlen("\n"));
 		}
 		if (in_background) {
 			write(STDOUT_FILENO, "Run in background.", strlen("Run in background."));
-		}
+		}*/
 
 		/**
 		 * Steps For Basic Shell:
@@ -277,7 +279,7 @@ int main(int argc, char* argv[])
 		 }
 		 else if(!strcmp(tokens[0],"cd")){
 			 if(chdir(tokens[1]) != 0){
-				write(STDOUT_FILENO, "change directory command failed\n", strlen("change directory command failed\n"));
+				write(STDOUT_FILENO, "Invalid directory.\n", strlen("Invalid directory.\n"));
 				
 			 }
 		 }
@@ -295,7 +297,7 @@ int main(int argc, char* argv[])
 					//write(STDOUT_FILENO, "child\n", strlen("child\n"));
 
 					if(execvp(tokens[0], tokens) == -1){
-						write(STDOUT_FILENO, "exec failed\n", strlen("exec failed\n"));
+						write(STDOUT_FILENO, "Unknown command\n", strlen("Unknown command\n"));
 					}
 					exit(0);
 
