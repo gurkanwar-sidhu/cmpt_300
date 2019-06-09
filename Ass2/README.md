@@ -6,34 +6,68 @@ In this project we develop a simple UNIX shell. The shell accepts user commands.
 ## Additional files
    * discussion.txt used to communicate tasks and workload
 
-## String Manipulation Functions
 
-### Design Decisions & Project Issues:
+## Design Decisions & Project Issues:
+
+### 3. Creating Child Process
 
 #### Design Decisions:
-1. int   mystrlen (const char *s);
-    * simple while loop to count letter until reaches '\0'
+1. Forking child
+    * return child pid in order to correctly
+
+2. Running execvp commands
+    * run inside of child (check if in child if childpid == 0)
+    * only wait for child if not in background
+
+### 4. Internal Commands
+
+#### Design Decisions:
+
+1. Implement exit, pwd, cd
+    * run all these commands if they occur before execvp
+
+
+
+### 5. Creating a History Feature
+
+#### Design Decisions:
+1. Add command to history
+    * modulus current history count by 10, in order to overwrite correct part of history array
     
-2. char* mystrcpy (char *dst, const  char *src);
-    * copy string to tmp array and then transfer tmp array to destination array
-    * decided a two stop process would be simpler
+2. retrieve command (copy into buffer, likely)
+    * Retrieve Previous Command :
+        - use the current history count and modulus by 10 to find the command before current in history array
+    * Retrieve nth Command in !n :
+        - use atoi to extract the number from the input
+        -modulus that number to find it in the array
     
-3. int   mystrcmp (const char *s1,const char *s2);
-    * use while loop to see if any letter is more than or less than corresponding letters in other string
-    * if both words are same up to a point, but one is longer use mystrlen() to compare words
+3. printing the last ten commands to the screen.
+    * find starting point by using modular division on current history number.
+    * print next 10 numbers. modulus by 10 every loop incase exceeds by 10.
+
+### 5.2 Signals
+
+#### Design Decisions:
+1. Add command to history
+    * modulus current history count by 10, in order to overwrite correct part of history array
     
-4. char* mystrdup (const char *src);
-   * use mystrlen() to find length of string
-   * malloc space in new array
-   * copy array with mystrcpy()
+2. retrieve command (copy into buffer, likely)
+    * Retrieve Previous Command :
+        - use the current history count and modulus by 10 to find the command before current in history array
+    * Retrieve nth Command in !n :
+        - use atoi to extract the number from the input
+        -modulus that number to find it in the array
+    
+3. printing the last ten commands to the screen.
+    * find starting point by using modular division on current history number.
+    * print next 10 numbers. modulus by 10 every loop incase exceeds by 10.
+    
+ 
 
 #### Project Issues:
    * Not too many issues. Used stack overflow when confused about dynamic memory allocation and pointers.  
+   * Occasionally confused by sample output files, but clarified on google groups.
+   * unfamiliarity with forks and child processes led to reviewing notes and youtube videos
+   * merge conflicts resolved with some hassle
 
-### How to Run Tests
 
-To run the test on functions in mystring/mystring.c compile the mystring/Makefile with
-
-'''
-make all
-'''
