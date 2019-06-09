@@ -7,7 +7,8 @@ Team:
     -at what point do we add to history? what if errors?
 Sarb:
     -make print funcition
-    -make 
+    -test memory leak with vangrind
+    -read file
  
 Gurk:
     -cd errors  
