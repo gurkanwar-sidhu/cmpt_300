@@ -63,7 +63,7 @@ char * retrieve_history_cmd(){
 	write(STDOUT_FILENO, "HISTORY: \n", strlen("HISTORY: \n"));
 	//write(STDOUT_FILENO, history[0], strlen(history[0]));
 
-	if(history_count <= 11){ //start at begginning if less than 10 
+	if(history_count <= 10){ //start at begginning if less than 10 
 		temp_hist_count = 1;
 		i =0;
 	}
