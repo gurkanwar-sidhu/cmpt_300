@@ -25,6 +25,7 @@ int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
 bool my_val = true;
+bool n_val = false;
 
 /**
  * Command Input and Processing
@@ -159,6 +160,8 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		buff[strlen(buff) - 1] = '\0';
 	}
 
+	n_val = true;
+
 	// ******retrieve and add history stuff **********//check
 	/*
 	I was thinking putting all this code inside the retrieve function.
@@ -245,8 +248,9 @@ int main(int argc, char* argv[])
 
 		signal(SIGINT, handle_SIGINT);//look up man signal for more info
 
-		if(getchar() == '\n'){
-			write(STDOUT_FILENO, "\n", strlen("\n"));
+		if(getchar() == '\n' && !n_val){ //checks for enter before reading into buffer
+			n_val = true;
+			continue;
 		}
 
 		read_command(input_buffer, tokens, &in_background);
@@ -322,7 +326,9 @@ int main(int argc, char* argv[])
 				write(STDOUT_FILENO, "fork failed\n", strlen("fork failed\n"));
 				exit(0);
 			}
-		}	
+		}
+
+			
 
 	}
 	return 0;
