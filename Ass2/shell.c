@@ -25,7 +25,7 @@ int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
 bool my_val = true;
-bool n_val = false;
+bool n_val = false;//flag for enter key
 
 /**
  * Command Input and Processing
@@ -157,10 +157,10 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		buff[strlen(buff) - 1] = '\0';
 	}
 
-	if(length == 1){
-			buff[0] = '\0';
-			buff[1] = '\0';
-			n_val = true;
+	if(length == 1 && buff[length-1] == '\n'){//if only 1 thing was input and it was enter key
+			buff[0] = '\0';//reset buff to end key
+			buff[1] = '\0';//resed buff to end key
+			n_val = true;// make n_val true
 	}
 
 	// ******retrieve and add history stuff **********//check
@@ -257,9 +257,9 @@ int main(int argc, char* argv[])
 
 		read_command(input_buffer, tokens, &in_background);
 
-		if(n_val){
-			n_val = false;
-			continue;
+		if(n_val){// if n_val is true, meaning just enter was pressed
+			n_val = false;// set n_val back to false
+			continue;// restart the loop
 		}
 
 		if(!my_val){
