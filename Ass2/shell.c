@@ -23,9 +23,9 @@ int global;
 pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
-char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
+char cwd[PATH_MAX]; //for get working directory from man cwd
 bool my_val = true; //for control c? 
-bool n_val = false;//flag for enter key annnddd other things to return top of loop
+bool n_val = false;//flag for enter key 
 
 /**
  * Command Input and Processing
@@ -48,16 +48,11 @@ void add_history(char *hist_buff ){
 	memset(hist_num,0,50);	
 }
 
- // Retrieve command (copy into buffer, likely),
-/*
-char * retrieve_history_cmd(){
-	return;
-}
-*/
+
  // Printing the last ten commands to the screen.
  void print_history(){
 	 char hist_num[50];
-	 int temp_hist_count= 1; //dont want to touch actual history count, this is for printing
+	 int temp_hist_count= 1; //temp history count for printing
 	 int i = (history_count+10) % 10;  // which string to print. it will wrap around
 
 	if(history_count <= 10){ //start at begginning if less than 10 
@@ -81,9 +76,9 @@ char * retrieve_history_cmd(){
 
  void handle_SIGINT(){
 
- 		my_val = false;
- 		write(STDOUT_FILENO, "\n", strlen("\n"));
- 		print_history();
+ 		my_val = false;//flag for SIGINT set to false
+ 		write(STDOUT_FILENO, "\n", strlen("\n"));//adding new line to match test case outputs
+ 		print_history();//call print history
 
   }
 
@@ -156,43 +151,32 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
 	}
-/* 
-	if(length == 1 && buff[length-1] == '\n'){//if only 1 thing was input and it was enter key
-			buff[0] = '\0';//reset buff to end key
-			buff[1] = '\0';//resed buff to end key
-			n_val = true;// annnddd other things to return top of loop
-	}
-	*/
 
 	if(buff[0] == '\0'){
-		n_val = true;// for enter annnddd other things to return top of loop
-		//write(STDOUT_FILENO, "found enter\n", strlen("found enter\n"));
-
+		n_val = true;// flag for enter set to true
 	}
 
-	// ******retrieve and add history stuff **********//check
-	/*
-	I was thinking putting all this code inside the retrieve function.
-	that function can return the retrieved buff into the buff here.
-	for error handling i was thinking replacing buff with key words
-	then when the key word is read in the main while loop we print the
-	error ..........
-	*/
 	char justNum[50];
 	int i= 0;
+
 	if(buff[0]=='!' && buff[1] == '!'){	//run prev command
 		
 		if(history_count >= 1){
+
 			i = (history_count+9) % 10;
 			strcpy(buff, history[i]);
-			write(STDOUT_FILENO, buff, strlen(buff));
-			write(STDOUT_FILENO, "\n", strlen("\n")); //new buff is pulled from history
+			write(STDOUT_FILENO, buff, strlen(buff)); //new buff is pulled from history
+			write(STDOUT_FILENO, "\n", strlen("\n"));
+			
 			if (buff[strlen(buff) - 1] == '\n') {
 				buff[strlen(buff) - 1] = '\0';
 			}
+			
 			add_history(buff); 
 		}
+		
 		else{
+			
 			n_val = true ; //annnddd other things to return top of loop
 			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
 		}
@@ -205,21 +189,23 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		int run_prev = atoi(justNum); //get the number to run
 
 		if(run_prev<= history_count && run_prev>0){
-			//run_prev--;
+			
 			i = (run_prev +9) % 10;
 			strcpy(buff, history[i]);
 			write(STDOUT_FILENO, buff, strlen(buff));
 			write(STDOUT_FILENO, "\n", strlen("\n")); //pullng new command from history
+			
 			if (buff[strlen(buff) - 1] == '\n') {
 				buff[strlen(buff) - 1] = '\0';
 			}
+
 			add_history(buff);
 		}
+		
 		else{
+			
 			n_val = true ; //annnddd other things to return top of loop
 			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
-
-
 		}
 	}
 
@@ -230,15 +216,15 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			add_history(buff);
 		} //check had to put it here cause after it gets messed up
 	}
-	
 	// Tokenize (saving original command string)
 	int token_count = tokenize_command(buff, tokens);
+
 	if (token_count == 0) {
 		return;
 	}
-
 	// Extract if running in background:
 	if (token_count > 0 && strcmp(tokens[token_count - 1], "&") == 0) {
+		
 		*in_background = true;
 		tokens[token_count - 1] = 0;
 	}
@@ -282,7 +268,6 @@ int main(int argc, char* argv[])
 		if(!strcmp(tokens[0],"exit")){
 			
 			exit(0);
-
 		}
 		
 		else if(!strcmp(tokens[0],"pwd")){
@@ -316,7 +301,6 @@ int main(int argc, char* argv[])
 				
 				if(childpid == 0){
 					//this is child
-
 					if(execvp(tokens[0], tokens) == -1){
 						char unknown[100];
 						sprintf(unknown, "%s: Unknown command\n", tokens[0]);
@@ -328,7 +312,6 @@ int main(int argc, char* argv[])
 
 				else{
 					//this is parent
-					
 					if(in_background){
 						//do not wait for child to end and continue other tasks
 					}
@@ -341,13 +324,12 @@ int main(int argc, char* argv[])
 			}
 
 			else{
+				
 				write(STDOUT_FILENO, "fork failed\n", strlen("fork failed\n"));
 				exit(0);
 			}
 		}
-
-			
-
 	}
+	
 	return 0;
 }
