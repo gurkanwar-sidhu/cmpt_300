@@ -24,8 +24,8 @@ pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
-bool my_val = true; //for control c?
-bool n_val = false;//flag for enter key
+bool my_val = true; //for control c? 
+bool n_val = false;//flag for enter key annnddd other things to return top of loop
 
 /**
  * Command Input and Processing
@@ -160,12 +160,12 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	if(length == 1 && buff[length-1] == '\n'){//if only 1 thing was input and it was enter key
 			buff[0] = '\0';//reset buff to end key
 			buff[1] = '\0';//resed buff to end key
-			n_val = true;// make n_val true
+			n_val = true;// annnddd other things to return top of loop
 	}
 	*/
 
 	if(buff[0] == '\0'){
-		n_val = true;// make n_val true
+		n_val = true;// for enter annnddd other things to return top of loop
 		//write(STDOUT_FILENO, "found enter\n", strlen("found enter\n"));
 
 	}
@@ -193,7 +193,8 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			add_history(buff); 
 		}
 		else{
-			//check : error handling
+			n_val = true ; //annnddd other things to return top of loop
+			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
 		}
 	}
 
@@ -215,13 +216,16 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			add_history(buff);
 		}
 		else{
-			//check: error handling
+			n_val = true ; //annnddd other things to return top of loop
+			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
+
+
 		}
 	}
 
 	else{ //regular case
 		//add command to history
-		if(my_val && !n_val){ //control c and enter
+		if(my_val && !n_val){ //control c and enter annnddd other things to return top of loop
 
 			add_history(buff);
 		} //check had to put it here cause after it gets messed up
@@ -271,7 +275,7 @@ int main(int argc, char* argv[])
 		}
 
 		if(!my_val){
-			my_val = true;
+			my_val = true; // control c
 			continue;
 		}
 
