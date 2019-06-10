@@ -38,17 +38,14 @@ void add_history(char *hist_buff ){
 
 	char hist_num[50];
 	int i = history_count % 10; //we are wrapping around rather than shifting, using modulus
+	
 	history_count++;
+	
 	strcpy(history[i], hist_buff);
+	
 	sprintf(hist_num,"here %d\t%s \n", history_count, history[i]);
-	//write(STDOUT_FILENO, hist_num, strlen(hist_num));
-
-	//for debuggin
-	//write(STDOUT_FILENO, "adding to history\n\n", strlen("adding to history\n\n"));
-
-	memset(hist_num,0,50);// reset array, idk if this is needed
-	//check: Can't you just free the array as it is redeclared every time the function is called?
-
+	
+	memset(hist_num,0,50);	
 }
 
  // Retrieve command (copy into buffer, likely),
@@ -155,12 +152,17 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	}
 
 	// Null terminate and strip \n.
+	//char test[100];
 	buff[length] = '\0';
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
+
+		if(length == 1){
+			n_val = true;
+		}
 	}
 
-	n_val = true;
+
 
 	// ******retrieve and add history stuff **********//check
 	/*
@@ -248,13 +250,13 @@ int main(int argc, char* argv[])
 
 		signal(SIGINT, handle_SIGINT);//look up man signal for more info
 
-		if(getchar() == '\n' && !n_val){ //checks for enter before reading into buffer
-			n_val = true;
-			continue;
-		}
-
 		read_command(input_buffer, tokens, &in_background);
 
+		if(n_val){
+			n_val = false;
+			input_buffer[0] = '\0';
+			continue;
+		}
 
 		if(!my_val){
 			my_val = true;
