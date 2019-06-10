@@ -24,6 +24,7 @@ pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
+bool my_val = true;
 
 /**
  * Command Input and Processing
@@ -82,8 +83,11 @@ char * retrieve_history_cmd(){
 
  void handle_SIGINT(){
 
+ 		my_val = false;
+ 		write(STDOUT_FILENO, "\n", strlen("\n"));
  		print_history();
- }
+
+  }
 
 /*
  * Tokenize the string in 'buff' into 'tokens'.
@@ -184,9 +188,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		
 		strcpy(justNum, &buff[1]);
 		int run_prev = atoi(justNum); //get the number to run
-		/*char hist_num[50];
-		sprintf(hist_num,"running this number in history %d\n", run_prev);
-		write(STDOUT_FILENO, hist_num, strlen(hist_num));*/
+
 		if(run_prev<= history_count && run_prev>0){
 			//run_prev--;
 			i = (run_prev +9) % 10;
@@ -202,7 +204,9 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 	else{ //regular case
 		//add command to history
-		add_history(buff); //check had to put it here cause after it gets messed up
+		if(my_val){
+		add_history(buff);
+		} //check had to put it here cause after it gets messed up
 	}
 	
 	// Tokenize (saving original command string)
@@ -235,107 +239,90 @@ int main(int argc, char* argv[])
 			write(STDOUT_FILENO, cwd, strlen(cwd));
 
 		}
+
 		write(STDOUT_FILENO, "> ", strlen("> "));
 		_Bool in_background = false;
-		read_command(input_buffer, tokens, &in_background);
 
-		// DEBUG: Dump out arguments:
-		/*for (int i = 0; tokens[i] != NULL; i++) {
-			write(STDOUT_FILENO, "   Token: ", strlen("   Token: "));
-			write(STDOUT_FILENO, tokens[i], strlen(tokens[i]));
+		signal(SIGINT, handle_SIGINT);//look up man signal for more info
+
+		if(getchar() == '\n'){
 			write(STDOUT_FILENO, "\n", strlen("\n"));
 		}
-		if (in_background) {
-			write(STDOUT_FILENO, "Run in background.", strlen("Run in background."));
-		}*/
 
-		/**
-		 * Steps For Basic Shell:
-		 * 1. Fork a child process
-		 * 2. Child process invokes execvp() using results in token array.
+		read_command(input_buffer, tokens, &in_background);
 
-		 * 3. If in_background is false, parent waits for
-		 *    child to finish. Otherwise, parent loops back to
-		 *    read_command() again immediately.
-		 */
 
-		 // 1. Fork a child process
-		//write(STDOUT_FILENO, tokens[0], strlen(tokens[0]));
+		if(!my_val){
+			my_val = true;
+			continue;
+		}
 
-		 if(!strcmp(tokens[0],"exit")){
-			write(STDOUT_FILENO, "exit command\n", strlen("exit command\n"));
+		if(!strcmp(tokens[0],"exit")){
 			
 			exit(0);
 
-		 }
-		 else if(!strcmp(tokens[0],"pwd")){
+		}
+		
+		else if(!strcmp(tokens[0],"pwd")){
+		
 			if(getcwd(cwd, sizeof(cwd)) != NULL){
 				write(STDOUT_FILENO, cwd, strlen(cwd));
 				write(STDOUT_FILENO, "\n", strlen("\n"));
-
 			}
+
 			else{
 				write(STDOUT_FILENO, "pwd failed\n", strlen("pwd failed\n"));
-
 			}
+		}
 
-		 }
-		 else if(!strcmp(tokens[0],"cd")){
-			 if(chdir(tokens[1]) != 0){
-				write(STDOUT_FILENO, "Invalid directory.\n", strlen("Invalid directory.\n"));
-				
-			 }
-		 }
+		else if(!strcmp(tokens[0],"cd")){
+		
+			if(chdir(tokens[1]) != 0){
+				write(STDOUT_FILENO, "No such file or directory.\n", strlen("No such file or directory.\n"));
+			}
+		}
+		
 		else if(!strcmp(tokens[0],"history")){
 				print_history();
 		}	
-		 else{
-
-		 
+		
+		else{
+ 
 			childpid = fork();
 			
 			if(childpid >= 0){ //fork successful
+				
 				if(childpid == 0){
 					//this is child
-					//write(STDOUT_FILENO, "child\n", strlen("child\n"));
 
 					if(execvp(tokens[0], tokens) == -1){
-						write(STDOUT_FILENO, "Unknown command\n", strlen("Unknown command\n"));
+						char unknown[100];
+						sprintf(unknown, "%s: Unknown command\n", tokens[0]);
+						write(STDOUT_FILENO, unknown, strlen(unknown));
 					}
-					exit(0);
 
+					exit(0);
 				}
+
 				else{
 					//this is parent
-					//write(STDOUT_FILENO, "parent\n", strlen("parent\n"));
+					
 					if(in_background){
 						//do not wait for child to end and continue other tasks
-						//exit(0);
 					}
+
 					else{
 						//wait for for child to end
 						waitpid(childpid,&status, 0); //check : option 0 waits fo any child process 
-						//exit(0);
 					}
-
 				}
 			}
+
 			else{
 				write(STDOUT_FILENO, "fork filed\n", strlen("fork filed\n"));
 				exit(0);
-
 			}
-		 }
-	/* signal handling: ^C or SIGINT */
-
-		struct sigaction handler; //make strcut for sigaction called handler
-		
-			handler.sa_handler = handle_SIGINT;//calls function to handle SIGINT
-			handler.sa_flags = 0;// resets flag
-		
-		sigemptyset(&handler.sa_mask);// ignore all other signals
-		
-		sigaction(SIGINT, &handler, NULL);		
+		}	
 
 	}
 	return 0;
