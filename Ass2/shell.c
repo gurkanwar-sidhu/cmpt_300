@@ -152,17 +152,16 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	}
 
 	// Null terminate and strip \n.
-	//char test[100];
 	buff[length] = '\0';
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
-
-		if(length == 1){
-			n_val = true;
-		}
 	}
 
-
+	if(length == 1){
+			buff[0] = '\0';
+			buff[1] = '\0';
+			n_val = true;
+	}
 
 	// ******retrieve and add history stuff **********//check
 	/*
@@ -181,6 +180,9 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			strcpy(buff, history[i]);
 			write(STDOUT_FILENO, buff, strlen(buff));
 			write(STDOUT_FILENO, "\n", strlen("\n")); //new buff is pulled from history
+			if (buff[strlen(buff) - 1] == '\n') {
+				buff[strlen(buff) - 1] = '\0';
+			}
 			add_history(buff); 
 		}
 		else{
@@ -200,6 +202,9 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 			strcpy(buff, history[i]);
 			write(STDOUT_FILENO, buff, strlen(buff));
 			write(STDOUT_FILENO, "\n", strlen("\n")); //pullng new command from history
+			if (buff[strlen(buff) - 1] == '\n') {
+				buff[strlen(buff) - 1] = '\0';
+			}
 			add_history(buff);
 		}
 		else{
@@ -254,7 +259,6 @@ int main(int argc, char* argv[])
 
 		if(n_val){
 			n_val = false;
-			input_buffer[0] = '\0';
 			continue;
 		}
 
