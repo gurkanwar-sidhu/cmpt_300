@@ -24,7 +24,7 @@ pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory //https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
-bool my_val = true;
+bool my_val = true; //for control c?
 bool n_val = false;//flag for enter key
 
 /**
@@ -156,11 +156,18 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 	if (buff[strlen(buff) - 1] == '\n') {
 		buff[strlen(buff) - 1] = '\0';
 	}
-
+/* 
 	if(length == 1 && buff[length-1] == '\n'){//if only 1 thing was input and it was enter key
 			buff[0] = '\0';//reset buff to end key
 			buff[1] = '\0';//resed buff to end key
 			n_val = true;// make n_val true
+	}
+	*/
+
+	if(buff[0] == '\0'){
+		n_val = true;// make n_val true
+		//write(STDOUT_FILENO, "found enter\n", strlen("found enter\n"));
+
 	}
 
 	// ******retrieve and add history stuff **********//check
@@ -214,8 +221,9 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 	else{ //regular case
 		//add command to history
-		if(my_val){
-		add_history(buff);
+		if(my_val && !n_val){ //control c and enter
+
+			add_history(buff);
 		} //check had to put it here cause after it gets messed up
 	}
 	
