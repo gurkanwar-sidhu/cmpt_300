@@ -1,28 +1,16 @@
 To Do:
-Team:
-    -double check how to run background process
-    -run tests for background process (email ta if needed)
-    -improve error messages
-    -use malloc to allocate for strings?
-    -at what point do we add to history? what if errors?
+
+
+    -get rid of checks
+    -check all edge cases
 Sarb:
-    -seg fault when ! more than 11
     -make print funcition
     -test memory leak with vangrind
     -read file
  
-Gurk:
-    -cd errors  
-    -get rid of token output
+Gurk: 
     -fix sig int 
     -enter seg fault
 
 
 
-ls
-    print the directory
-!1
-    ls
-    print directory
-
- !7\0   

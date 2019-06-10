@@ -319,7 +319,7 @@ int main(int argc, char* argv[])
 			}
 
 			else{
-				write(STDOUT_FILENO, "fork filed\n", strlen("fork filed\n"));
+				write(STDOUT_FILENO, "fork failed\n", strlen("fork failed\n"));
 				exit(0);
 			}
 		}	
