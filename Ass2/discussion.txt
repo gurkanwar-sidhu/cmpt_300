@@ -1,16 +1,13 @@
 To Do:
 
-
-    -get rid of checks
-    -check all edge cases
 Sarb:
-    -make print funcition
-    -test memory leak with vangrind
-    -read file
- 
+    
 Gurk: 
-    -fix sig int 
-    -enter seg fault
+	- ask T.A's bout additional valgrind commands
+
+    - finish Readme
+
+	- confirm all error mssages
 
 
 
