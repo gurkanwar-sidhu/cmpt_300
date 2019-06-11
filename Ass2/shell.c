@@ -17,14 +17,14 @@
 #define NUM_TOKENS (COMMAND_LENGTH / 2 + 1)
 #define HISTORY_DEPTH 10
 
-char history[HISTORY_DEPTH][COMMAND_LENGTH];
+char history[HISTORY_DEPTH][COMMAND_LENGTH];// 2d array to keep track of history
 int history_count = 0; //keep track of history command number
 int global; 
 pid_t childpid; /* variable to store the child's pid */
 int retval;     /* child process: user-provided return code */
 int status;     /* parent process: child's exit status */
 char cwd[PATH_MAX]; //for get working directory from man cwd
-bool my_val = true; //for control c? 
+bool my_val = true; //flag for ^C
 bool n_val = false;//flag for enter key 
 
 /**
@@ -177,7 +177,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		
 		else{
 			
-			n_val = true ; //annnddd other things to return top of loop
+			n_val = true ; // to return top of loop
 			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
 		}
 	}
@@ -204,17 +204,17 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 		
 		else{
 			
-			n_val = true ; //annnddd other things to return top of loop
+			n_val = true ; // to return top of loop
 			write(STDOUT_FILENO, "Unknown history command\n", strlen("Unknown history command\n"));
 		}
 	}
 
 	else{ //regular case
 		//add command to history
-		if(my_val && !n_val){ //control c and enter annnddd other things to return top of loop
+		if(my_val && !n_val){ //control c and enter to return top of loop
 
 			add_history(buff);
-		} //check had to put it here cause after it gets messed up
+		} 
 	}
 	// Tokenize (saving original command string)
 	int token_count = tokenize_command(buff, tokens);
@@ -318,7 +318,7 @@ int main(int argc, char* argv[])
 
 					else{
 						//wait for for child to end
-						waitpid(childpid,&status, 0); //check : option 0 waits fo any child process 
+						waitpid(childpid,&status, 0); //option 0 waits fo any child process 
 					}
 				}
 			}
