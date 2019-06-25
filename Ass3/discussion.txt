@@ -1,0 +1,10 @@
+###Discussion for Assignment 3###
+
+Gurk:
+	- Read Assignment 3 thoroughly and ask T.A.'s for clarification
+	where needed
+	- Locate lectures which discus the bounded buffer files and anyother related material
+
+Sarb:
+	- Read Assignment 3 thoroughly and ask T.A.'s for clarification
+	where needed
