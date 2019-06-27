@@ -12,14 +12,9 @@
 #include <errno.h>
 #include <signal.h>
 
-//function to make printing easyier
-//if need to print numbers, first turn into string, 
-char sprintString[100]; 
-void myPrint(char* buff){
-	write(STDOUT_FILENO, buff, strlen(buff));
-	write(STDOUT_FILENO, "\n", strlen("\n"));
-	sprintString[0] = '\0';
-}
+#include "bbuff.h"
+#include "stats.h"
+
 		 
 
 /*
@@ -31,39 +26,65 @@ int factories = 0;
 int kids = 0;
 int seconds = 0;
 
-//check: read Assignment page thoroughly, large assigmet but very focused hints given throughout
-//check: message each other before pushing and pulling
+int count = 0; //testing
+//factory_number: tracks which factory thread produced the candy item
+// time_stamp_in_ms: tracks when the item was created. You can get the current number of milliseconds using the following function
+//check: must be linked through -lrt flag, What is -lrt flag?
+
+//function to make printing easyier
+//if need to print numbers, first turn into string, 
+char sprintString[100]; 
+void myPrint(char* buff){
+	write(STDOUT_FILENO, buff, strlen(buff));
+	write(STDOUT_FILENO, "\n", strlen("\n"));
+	sprintString[0] = '\0';
+}
 
 typedef struct  {
     int factory_number;
     double time_stamp_in_ms;
 } candy_t;
 
-//factory_number: tracks which factory thread produced the candy item
-// time_stamp_in_ms: tracks when the item was created. You can get the current number of milliseconds using the following function
-//check: must be linked through -lrt flag, What is -lrt flag?
-
+//inserting one candy
+void insertCandy() {
+    candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
+    candy->factory_number = count; //check fix these two
+    candy->time_stamp_in_ms = 55;
+    bbuff_blocking_insert(candy);
+}
 
 int main(int argc, char *argv[]){
 	 // 1.  Extract arguments:
 			 //Process the arguments passed on the command line. All arguments must be greater than 0. If any argument is 0 or less, display an error and exit the program.
-	if((factories <1 || kids <1 || seconds < 1) || argc < 4){
-		myPrint("not enough factories, kids, or seconds or variable is less than 0");
+	if(argc < 4){
+		myPrint("missing variables");
 		exit(0);
-	}
+	}		
 	factories = atoi(argv[1]);
 	kids = atoi(argv[2]);
-	seconds = atoi(argv[3]);
+	seconds = atoi(argv[3]); 
+	if(factories <1 || kids <1 || seconds < 1){
+		myPrint("variables is less than 0");
+		exit(0);
+	}
 	sprintf(sprintString, "factories: %d, kids: %d, seconds: %d", factories,kids, seconds);
 	myPrint(sprintString);
 
     // 2.  Initialize modules:
     		// Do any module initialization. You will have at least two modules: bounded buffer, and statistics. If no initialization is required by your implementation, you may skip this step.
-    
+    bbuff_init(); //check: idk if this is right
     // 3.  Launch candy-factory threads:
     		//Spawn the requested number of candy-factory threads. To each thread, pass it its factory number: 0 to (number of factories - 1).
 			//- Hint: Store the thread IDs in an array because you’ll need to join on them later.
 			//- Hint: Don’t pass each thread a reference to the same variable because as you change the variable’s value for the next thread, there’s no guaranty the previous thread will have read the previous value yet. You can use an array to have a different variable for each thread
+	
+	//check: i am not gonna do worry about threads right now. just gonna try to perfect the buffer. inserting deleting
+		//add a candies to the buffer
+	for(int i =0; i < 5; i++){
+		count++;
+		insertCandy();
+	}
+
 
     // 4.  Launch kid threads:
     		// Spawn the requested number of kid threads
