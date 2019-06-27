@@ -1,10 +1,36 @@
 //Main application holding factory thread, kid thread, and main() function. Plus some other helper functions, and some #defined constants.
+#include <stdio.h> 
+#include <stdlib.h>  // for strtol
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <linux/limits.h>
+#include <errno.h>
+#include <signal.h>
+
+//function to make printing easyier
+//if need to print numbers, first turn into string, 
+char sprintString[100]; 
+void myPrint(char* buff){
+	write(STDOUT_FILENO, buff, strlen(buff));
+	write(STDOUT_FILENO, "\n", strlen("\n"));
+	sprintString[0] = '\0';
+}
+		 
 
 /*
 # Factories: Number of candy-factory threads to spawn.
 # Kids: Number of kid threads to spawn.
 # Seconds: Number of seconds to allow the factory threads to run for.
 */
+int factories = 0;
+int kids = 0;
+int seconds = 0;
+
 //check: read Assignment page thoroughly, large assigmet but very focused hints given throughout
 //check: message each other before pushing and pulling
 
@@ -18,10 +44,19 @@ typedef struct  {
 //check: must be linked through -lrt flag, What is -lrt flag?
 
 
-int main(){
+int main(int argc, char *argv[]){
 	 // 1.  Extract arguments:
 			 //Process the arguments passed on the command line. All arguments must be greater than 0. If any argument is 0 or less, display an error and exit the program.
-    
+	if((factories <1 || kids <1 || seconds < 1) || argc < 4){
+		myPrint("not enough factories, kids, or seconds or variable is less than 0");
+		exit(0);
+	}
+	factories = atoi(argv[1]);
+	kids = atoi(argv[2]);
+	seconds = atoi(argv[3]);
+	sprintf(sprintString, "factories: %d, kids: %d, seconds: %d", factories,kids, seconds);
+	myPrint(sprintString);
+
     // 2.  Initialize modules:
     		// Do any module initialization. You will have at least two modules: bounded buffer, and statistics. If no initialization is required by your implementation, you may skip this step.
     
