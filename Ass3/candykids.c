@@ -4,7 +4,7 @@
 # Factories: Number of candy-factory threads to spawn.
 # Kids: Number of kid threads to spawn.
 # Seconds: Number of seconds to allow the factory threads to run for.
-*/h
+*/
 //check: read Assignment page thoroughly, large assigmet but very focused hints given throughout
 //check: message each other before pushing and pulling
 
@@ -18,7 +18,7 @@ typedef struct  {
 //check: must be linked through -lrt flag, What is -lrt flag?
 
 
-main(){
+int main(){
 	 // 1.  Extract arguments:
 			 //Process the arguments passed on the command line. All arguments must be greater than 0. If any argument is 0 or less, display an error and exit the program.
     
@@ -51,4 +51,5 @@ main(){
 
     // 10. Cleanup any allocated memory:
     		//Free any dynamically allocated memory. You may need to call cleanup functions in your statistics and bounded buffer modules if they need to free any memory
+	return 0;		
 }

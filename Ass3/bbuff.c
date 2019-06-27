@@ -1,1 +1,6 @@
-##Create a bounded buffer module which encapsulates access to the bounded buffer. Your bounded buffer must be implemented using the producer-consumer technique we discussed in class
+
+
+void bbuff_init(void);
+void bbuff_blocking_insert(void* item);
+void* bbuff_blocking_extract(void);
+_Bool bbuff_is_empty(void);
