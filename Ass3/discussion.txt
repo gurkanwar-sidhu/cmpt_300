@@ -3,7 +3,6 @@
 -how to link current_time_in_ms
 - use circular array for buffer?
 - search and remove checks (solve problems)
-- is the bounded buffer fixed in size?? if yes-> circular array
 
 Gurk:
 	- Locate lectures which discus the bounded buffer files and anyother related material
