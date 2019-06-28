@@ -26,40 +26,52 @@ void bbuff_init(void){
 }
 void bbuff_blocking_insert(void* item){
     if(size == 10){
-        printf("toooo big");
+        printf("toooo big\n");
     }
-    printf("inserting in %d\n", (front+size)%10);
-    theBuffer[(front+size)%10] = item;
-    
-    size++;
-    //print all for testing
-    int itr = front;
-    int tempSize= 0;
-    candy_t *candy;
-    if(size!=0){
-        while(tempSize <size){
-        itr = itr%10;
-        candy  = theBuffer[itr];
-        printf("print %d\n", candy->factory_number );
+    else{
+        printf("inserting in %d\n", (front+size)%10);
         
-        if(candy->factory_number ==13){
-            break;
+        theBuffer[(front+size)%10] = item;
+        
+        size++;
+        //print all for testing
+        int itr = front;
+        int tempSize= 0;
+        candy_t *candy= theBuffer[itr];
+        if(size!=0){
+            while(tempSize <size){
+                itr = itr%10;
+                candy  = theBuffer[itr];
+                //printf("tempSize %d and size %d\n", tempSize, size);
+                printf("print %d\n", candy->factory_number );
+                
+                
+                itr++;
+                tempSize++;
+            }
         }
-        itr++;
-        tempSize++;
+    
  
         
-        }
+        
     }
-    
+    //printf("size is %d\n\n", size);
     //printf("insert\n\n");
 }
 void* bbuff_blocking_extract(void){
-    candy_t *candy = theBuffer[front];
-    front++;
-    front = front % 10;
-    size--;
-    return candy;
+    printf("size is %d\n",size);
+    if(size==0){
+        printf("nothing to extract\n");
+    }
+    else{
+        candy_t *candy = theBuffer[front];
+        front++;
+        front = front % 10;
+        size--;
+        return candy;
+    }
+    return NULL;
+    
 }
 _Bool bbuff_is_empty(void){
     if(size ==0){

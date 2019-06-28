@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
 		pthread_create(&daThreadId, ...)
 		//ask call dathread_function(void* arg)???? Inserting the candies
 		// Wait
-		sleep(...)
+		sleep(...)  
 
 		// Tell thread to stop itself, and then wait until it's done.
 		stop_thread = true;
@@ -92,46 +92,8 @@ int main(int argc, char *argv[]){
 */
 
 
-	//check: i am not gonna do worry about threads right now. just gonna try to perfect the buffer. inserting deleting
-		//add a candies to the buffer
-	for(int i =0; i < 10; i++){ //testing...
-		myCount++;
-		insertCandy();
-		/* 
-		if(i%3 ==0 && i>0){
-			myPrint("extracting");
-			candy_t *ret_candy = bbuff_blocking_extract();
-			sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
-			myPrint(sprintString);
-		}
-		*/
-	}
-	myPrint("extracting");
-	candy_t *ret_candy = bbuff_blocking_extract();
-	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
-	myPrint(sprintString);
-
-	myPrint("extracting");
-	ret_candy = bbuff_blocking_extract();
-	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
-	myPrint(sprintString);
-
-	myPrint("extracting");
-	ret_candy = bbuff_blocking_extract();
-	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
-	myPrint(sprintString);
-	myCount++;
-	insertCandy();
-	myCount++;
-	insertCandy();
 	
 
-	myCount++;
-	insertCandy();
-	myCount++;
-	insertCandy();
-	myCount++;
-	insertCandy();
 
 
     // 4.  Launch kid threads:

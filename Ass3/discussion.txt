@@ -12,3 +12,63 @@ Gurk:
 Sarb:
 	- make sure insert and delete in buffer works perfect
 	- start understanding how to implement the locks (semaphores)
+
+
+
+----------------------------
+storing some test cases for buffer... delete afterwards:
+
+
+
+
+for(int i =0; i < 10; i++){ //testing...
+		myCount++;
+		insertCandy();
+		/* 
+		if(i%3 ==0 && i>0){
+			myPrint("extracting");
+			candy_t *ret_candy = bbuff_blocking_extract();
+			sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+			myPrint(sprintString);
+		}
+		*/
+	}
+	myPrint("extracting");
+	candy_t *ret_candy = bbuff_blocking_extract();
+	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+	myPrint(sprintString);
+
+	myPrint("extracting");
+	ret_candy = bbuff_blocking_extract();
+	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+	myPrint(sprintString);
+
+	myPrint("extracting");
+	ret_candy = bbuff_blocking_extract();
+	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+	myPrint(sprintString);
+	myCount++;
+	insertCandy();
+	myCount++;
+	insertCandy();
+	myCount++;
+	insertCandy();
+	myPrint("extracting");
+	ret_candy = bbuff_blocking_extract();
+	sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+	myPrint(sprintString);
+	myCount++;
+	insertCandy();
+	for(int i =0; i < 11; i++){ //testing...
+		myPrint("extracting");
+		ret_candy = bbuff_blocking_extract();
+		if(ret_candy!=NULL){
+			sprintf(sprintString, "returned candy is %d", ret_candy->factory_number);
+			myPrint(sprintString);
+		}
+		
+	}
+	myCount++;
+	insertCandy();
+	myCount++;
+	insertCandy();
