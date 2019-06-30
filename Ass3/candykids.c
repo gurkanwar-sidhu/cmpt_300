@@ -24,11 +24,11 @@
 # Kids: Number of kid threads to spawn.
 # Seconds: Number of seconds to allow the factory threads to run for.
 */
-int factories = 0;
-int kids = 0;
-int seconds = 0;
+int factories;
+int kids;
+int seconds;
 
-int fact_num=1;
+int fact_num;
 //int myCount = 0; //testing
 
 //factory_number: tracks which factory thread produced the candy item
@@ -69,26 +69,34 @@ int rand_num_factory(){
     srand(time(0));
 
     int random_number = (rand() % 4);
-    random_number++;//check remove this line of code, i didnt like how when it was 0 seconds it printed too much stuff
+    //random_number++;//check this line is wrong it changes the random output from 0-3 to 1-4 wrong
     return random_number;
 }
 
 _Bool stop_thread = false;
 
 void* launch_factory(void* arg){
-	printf("launching factory number %d\n", fact_num);
+
+    int factory_sleep;
+	/*printf("launching factory number %d\n", fact_num);
 	int factory_sleep = rand_num_factory();
 
-    while(!stop_thread){
+    printf("factory sleep: %d, stop_thread: %d\n", factory_sleep, stop_thread);
+    */
+    while(!stop_thread){//check completely being ignored now?
 
-    
 		factory_sleep = rand_num_factory();
 
-		sleep(factory_sleep);
         printf("\tFactory %d ships candy and waits %ds\n",fact_num, factory_sleep);
 
         insertCandy();
-		
+
+        for(int j = 0; j < factory_sleep; j++){
+
+            printf("Time %ds:\n", j);
+        }
+        
+        sleep(factory_sleep);
 		
     }
 	printf("Candy-factory %d done\n", fact_num);
@@ -148,12 +156,6 @@ int main(int argc, char *argv[]){
 		stop_thread = true;
 		pthread_join(daThreadID, NULL)
 */
-
-
-	
-
-
-
     // 4.  Launch kid threads:
     		// Spawn the requested number of kid threads
 
@@ -179,12 +181,7 @@ Sleep for either 0 or 1 seconds (randomly selected). The kid threads are cancele
  */
     // 5.  Wait for requested time:
     		// In a loop, call sleep(1). Loop as many times as the “# Seconds” command line argument. Print the number of seconds running each time, such as “Time 3s” after the 3rd sleep. This shows time ticking away as your program executes.
-	while(seconds>0){
-		sleep(1);
-		seconds--;
-		printf("Time %ds:\n", seconds);
-	}		
-
+	
     // 6.  Stop candy-factory threads:
     		//  Indicate to the factory threads that they are to finish, and then call join for each factory thread. See section on candy-factory threads (below) for more.
 	stop_thread = true;
