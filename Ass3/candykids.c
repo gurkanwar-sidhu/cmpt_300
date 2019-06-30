@@ -11,6 +11,8 @@
 #include <linux/limits.h>
 #include <errno.h>
 #include <signal.h>
+#include <time.h>
+#include <pthread.h>
 
 #include "bbuff.h"
 #include "stats.h"
@@ -40,6 +42,13 @@ void myPrint(char* buff){
 	sprintString[0] = '\0';
 }
 
+double current_time_in_ms(void)
+{
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    return now.tv_sec * 1000.0 + now.tv_nsec/1000000.0;
+}
+
 typedef struct  {
     int factory_number;
     double time_stamp_in_ms;
@@ -49,8 +58,35 @@ typedef struct  {
 void insertCandy() {
     candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
     candy->factory_number = myCount; //check fix these two, with actual factory number and time
-    candy->time_stamp_in_ms = 55;
+    candy->time_stamp_in_ms = current_time_in_ms();
     bbuff_blocking_insert(candy);
+}
+
+int rand_num_factory(){
+
+    srand(time(0));
+
+    int random_number = (rand() % 4);
+    
+    return random_number;
+}
+
+_Bool stop_thread = false;
+
+void* dathread_function(void* arg){
+
+    while(!stop_thread){
+
+        int num = rand_num_factory(); 
+
+        printf("\tFactory %d ships candy and waits %ds\n",factories, num);
+
+        insertCandy();
+    }
+
+    printf("Candy-factory %d done\n", myCount);
+
+ return 0;
 }
 
 int main(int argc, char *argv[]){
@@ -77,7 +113,33 @@ int main(int argc, char *argv[]){
     		//Spawn the requested number of candy-factory threads. To each thread, pass it its factory number: 0 to (number of factories - 1).
 			//- Hint: Store the thread IDs in an array because you’ll need to join on them later.
 			//- Hint: Don’t pass each thread a reference to the same variable because as you change the variable’s value for the next thread, there’s no guaranty the previous thread will have read the previous value yet. You can use an array to have a different variable for each thread
-	/* 
+
+    //int* candyfactory_id[factories];
+
+    pthread_t daThreadId;
+
+    for(int i = 0; i < factories; i++){
+
+        myCount = i;
+
+        pthread_create(&daThreadId, NULL, dathread_function, (void*)&daThreadId);
+    
+        //candyfactory_id[i] = *daThreadId;
+    }
+
+    int factory_sleep = rand_num_factory();
+
+    for(int j = 0; j < factory_sleep; j++){
+
+        printf("Time %ds:\n", j);
+    }
+
+    stop_thread = true;
+
+    printf("Stopping candy factories...\n");
+
+    pthread_join(daThreadId, NULL);
+    /* 
 	for every factory	
 		// Spawn thread
 		pthread_id daThreadId;
