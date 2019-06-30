@@ -29,7 +29,7 @@ void bbuff_blocking_insert(void* item){
         printf("toooo big\n");
     }
     else{
-        printf("inserting in %d\n", (front+size)%10);
+        printf("inside buff : inserting in %d\n", (front+size)%10);
         
         theBuffer[(front+size)%10] = item;
         
@@ -39,16 +39,19 @@ void bbuff_blocking_insert(void* item){
         int tempSize= 0;
         candy_t *candy= theBuffer[itr];
         if(size!=0){
-            while(tempSize <size){
-                itr = itr%10;
-                candy  = theBuffer[itr];
-                //printf("tempSize %d and size %d\n", tempSize, size);
-                printf("print %d\n", candy->factory_number );
-                
-                
-                itr++;
-                tempSize++;
+            if(size==9){ //easier for testing, only print all if buffer is full
+                 while(tempSize <size){
+                    itr = itr%10;
+                    candy  = theBuffer[itr];
+                    //printf("tempSize %d and size %d\n", tempSize, size);
+                    printf("inside buffer print %d  ", candy->factory_number );
+                    
+                    
+                    itr++;
+                    tempSize++;
+                }
             }
+           
         }
     
  

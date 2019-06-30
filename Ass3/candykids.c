@@ -28,7 +28,9 @@ int factories = 0;
 int kids = 0;
 int seconds = 0;
 
-int myCount = 0; //testing
+int fact_num=1;
+//int myCount = 0; //testing
+
 //factory_number: tracks which factory thread produced the candy item
 // time_stamp_in_ms: tracks when the item was created. You can get the current number of milliseconds using the following function
 //check: must be linked through -lrt flag, What is -lrt flag?
@@ -57,8 +59,8 @@ typedef struct  {
 //inserting one candy
 void insertCandy() {
     candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
-    candy->factory_number = myCount; //check fix these two, with actual factory number and time
-    candy->time_stamp_in_ms = current_time_in_ms();
+    candy->factory_number = fact_num; 
+	candy->time_stamp_in_ms = current_time_in_ms();
     bbuff_blocking_insert(candy);
 }
 
@@ -67,24 +69,29 @@ int rand_num_factory(){
     srand(time(0));
 
     int random_number = (rand() % 4);
-    
+    random_number++;//check remove this line of code, i didnt like how when it was 0 seconds it printed too much stuff
     return random_number;
 }
 
 _Bool stop_thread = false;
 
-void* dathread_function(void* arg){
+void* launch_factory(void* arg){
+	printf("launching factory number %d\n", fact_num);
+	int factory_sleep = rand_num_factory();
 
     while(!stop_thread){
 
-        int num = rand_num_factory(); 
+    
+		factory_sleep = rand_num_factory();
 
-        printf("\tFactory %d ships candy and waits %ds\n",factories, num);
+		sleep(factory_sleep);
+        printf("\tFactory %d ships candy and waits %ds\n",fact_num, factory_sleep);
 
         insertCandy();
+		
+		
     }
-
-    printf("Candy-factory %d done\n", myCount);
+	printf("Candy-factory %d done\n", fact_num);
 
  return 0;
 }
@@ -120,25 +127,14 @@ int main(int argc, char *argv[]){
 
     for(int i = 0; i < factories; i++){
 
-        myCount = i;
+        fact_num = i;
 
-        pthread_create(&daThreadId, NULL, dathread_function, (void*)&daThreadId);
+        pthread_create(&daThreadId, NULL, launch_factory, (void*)&daThreadId);
     
         //candyfactory_id[i] = *daThreadId;
     }
 
-    int factory_sleep = rand_num_factory();
-
-    for(int j = 0; j < factory_sleep; j++){
-
-        printf("Time %ds:\n", j);
-    }
-
-    stop_thread = true;
-
-    printf("Stopping candy factories...\n");
-
-    pthread_join(daThreadId, NULL);
+    
     /* 
 	for every factory	
 		// Spawn thread
@@ -183,9 +179,19 @@ Sleep for either 0 or 1 seconds (randomly selected). The kid threads are cancele
  */
     // 5.  Wait for requested time:
     		// In a loop, call sleep(1). Loop as many times as the “# Seconds” command line argument. Print the number of seconds running each time, such as “Time 3s” after the 3rd sleep. This shows time ticking away as your program executes.
+	while(seconds>0){
+		sleep(1);
+		seconds--;
+		printf("Time %ds:\n", seconds);
+	}		
 
     // 6.  Stop candy-factory threads:
     		//  Indicate to the factory threads that they are to finish, and then call join for each factory thread. See section on candy-factory threads (below) for more.
+	stop_thread = true;
+
+    printf("Stopping candy factories...\n");
+
+    pthread_join(daThreadId, NULL);
 
     // 7.  Wait until no more candy:
     		// While there is still candy in the bounded buffer (check by calling a method in your bounded buffer module), print “Waiting for all candy to be consumed” and sleep for 1 second.
