@@ -28,7 +28,8 @@ int factories = 0;
 int kids = 0;
 int seconds = 0;
 
-int fact_num=1;
+
+
 //int myCount = 0; //testing
 
 //factory_number: tracks which factory thread produced the candy item
@@ -57,9 +58,9 @@ typedef struct  {
 } candy_t;
 
 //inserting one candy
-void insertCandy() {
+void insertCandy(void* fact_number) {
     candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
-    candy->factory_number = fact_num; 
+    candy->factory_number = *((int*)fact_number); 
 	candy->time_stamp_in_ms = current_time_in_ms();
     bbuff_blocking_insert(candy);
 }
@@ -75,23 +76,19 @@ int rand_num_factory(){
 
 _Bool stop_thread = false;
 
-void* launch_factory(void* arg){
-	printf("launching factory number %d\n", fact_num);
+void* launch_factory(void* fact_number){
+	printf("launching factory number %d\n", *((int*)fact_number));
 	int factory_sleep = rand_num_factory();
 
     while(!stop_thread){
-
     
 		factory_sleep = rand_num_factory();
-
 		sleep(factory_sleep);
-        printf("\tFactory %d ships candy and waits %ds\n",fact_num, factory_sleep);
-
-        insertCandy();
-		
+        printf("\tFactory %d ships candy and waits %ds\n",*((int*)fact_number), factory_sleep);
+        insertCandy(fact_number);
 		
     }
-	printf("Candy-factory %d done\n", fact_num);
+	printf("Candy-factory %d done\n", *((int*)fact_number));
 
  return 0;
 }
@@ -122,14 +119,14 @@ int main(int argc, char *argv[]){
 			//- Hint: Don’t pass each thread a reference to the same variable because as you change the variable’s value for the next thread, there’s no guaranty the previous thread will have read the previous value yet. You can use an array to have a different variable for each thread
 
     //int* candyfactory_id[factories];
-
+	int *fact_numbers[factories]; //
+	
+	printf("the number is %d\n", *(fact_numbers[1]));
     pthread_t daThreadId;
-
     for(int i = 0; i < factories; i++){
-
-        fact_num = i;
-
-        pthread_create(&daThreadId, NULL, launch_factory, (void*)&daThreadId);
+        *(fact_numbers[i]) = i;
+		printf("fact_num is %d\n", *(fact_numbers[i]));
+        pthread_create(&daThreadId, NULL, launch_factory, fact_numbers[i]);
     
         //candyfactory_id[i] = *daThreadId;
     }
