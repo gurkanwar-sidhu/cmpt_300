@@ -3,15 +3,21 @@
 -how to link current_time_in_ms
 - use circular array for buffer?
 - search and remove checks (solve problems)
+- look for mallocs and free all the allocated memory at end
+- use semaphores and mutex locks?????
+
 
 Gurk:
 	- Locate lectures which discus the bounded buffer files and anyother related material
 	- start getting the threads to work. (deploying factory threads and kid threads)
 	- work out timer for when candy was created, when to end program
+	- do step 7 8 and 10
 
 Sarb:
 	- make sure insert and delete in buffer works perfect
 	- start understanding how to implement the locks (semaphores)
+	- implement some of locks and semaphores
+	- start on statistics
 
 
 
