@@ -107,7 +107,7 @@ void* launch_factory(void* a_fact){
     while(!stop_thread){
     
 		factory_sleep = rand_num_factory();
-		sleep(factory_sleep);
+		
 		//acquire empty the lock
 		//sem_wait(&empty);
         printf("\tFactory %d with thread id ships candy and waits %ds\n",((fact_t*)a_fact)->factory_number, factory_sleep);
@@ -119,6 +119,7 @@ void* launch_factory(void* a_fact){
 
 		//signal buffer is not empty
 		//sem_post(&full);
+		sleep(factory_sleep);
     }
 	printf("Candy-factory %d done\n", ((fact_t*)a_fact)->factory_number);
 
@@ -220,10 +221,9 @@ Sleep for either 0 or 1 seconds (randomly selected). The kid threads are cancele
  */
     // 5.  Wait for requested time:
     		// In a loop, call sleep(1). Loop as many times as the “# Seconds” command line argument. Print the number of seconds running each time, such as “Time 3s” after the 3rd sleep. This shows time ticking away as your program executes.
-	while(seconds>0){
+for(int s = 0; s < seconds; s++){		
 		sleep(1);
-		seconds--;
-		printf("Time %ds:\n", seconds);
+		printf("Time %ds:\n", s);
 	}		
 
     // 6.  Stop candy-factory threads:
@@ -233,7 +233,7 @@ Sleep for either 0 or 1 seconds (randomly selected). The kid threads are cancele
     printf("Stopping candy factories...\n");
 
 	printf("factory number %d\n", factories);
-	for(int i =0; i< factories; i++){
+	for(int i = 0; i < factories; i++){
 		printf("joining\n");
 		pthread_join(fact_threadID[i], NULL);
 	}

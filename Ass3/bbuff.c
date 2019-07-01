@@ -76,7 +76,7 @@ void* bbuff_blocking_extract(void){
     return NULL;
     
 }
-_Bool bbuff_is_empty(void){
+_Bool bbuff_is_empty(void){ // true or false= bbuff_is_empty()
     if(size ==0){
         return true;
     }
