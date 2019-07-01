@@ -13,6 +13,10 @@
 #include <signal.h>
 #include <time.h>
 #include <pthread.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <semaphore.h>
 
 #include "bbuff.h"
 #include "stats.h"
@@ -28,6 +32,14 @@ int factories = 0;
 int kids = 0;
 int seconds = 0;
 
+// mutex locks
+pthread_mutex_t mutex;
+
+// the semaphores
+sem_t full, empty;
+
+//buffer size
+int buffer_size = 10;
 
 
 //int myCount = 0; //testing
@@ -57,10 +69,21 @@ typedef struct  {
     double time_stamp_in_ms;
 } candy_t;
 
+typedef struct  {
+    int factory_number;
+	int made;
+	int eaten;
+	double min_delay;
+	double max_delay;
+
+    double time_stamp_in_ms;
+} fact_t;
+
 //inserting one candy
-void insertCandy(void* fact_number) {
+void insertCandy(int fact_number) {
+
     candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
-    candy->factory_number = *((int*)fact_number); 
+    candy->factory_number = fact_number; 
 	candy->time_stamp_in_ms = current_time_in_ms();
     bbuff_blocking_insert(candy);
 }
@@ -76,19 +99,31 @@ int rand_num_factory(){
 
 _Bool stop_thread = false;
 
-void* launch_factory(void* fact_number){
-	printf("launching factory number %d\n", *((int*)fact_number));
+void* launch_factory(void* a_fact){
+	
+	printf("launching factory number %d with thread id  \n",((fact_t*)a_fact)->factory_number);
 	int factory_sleep = rand_num_factory();
 
     while(!stop_thread){
     
 		factory_sleep = rand_num_factory();
 		sleep(factory_sleep);
-        printf("\tFactory %d ships candy and waits %ds\n",*((int*)fact_number), factory_sleep);
-        insertCandy(fact_number);
+		//acquire the lock (semaphore)
+		sem_wait(&empty);
+
+		//acquire the mutex lock
+		pthread_mutex_lock(&mutex);
+        printf("\tFactory %d with thread id ships candy and waits %ds\n",((fact_t*)a_fact)->factory_number, factory_sleep);
+		//insert candy
+        insertCandy(((fact_t*)a_fact)->factory_number);
+
+		//release lock
+		pthread_mutex_unlock(&mutex);
+		// signal full, (buffer has candies)
+		sem_post(&full);
 		
     }
-	printf("Candy-factory %d done\n", *((int*)fact_number));
+	printf("Candy-factory %d done\n", ((fact_t*)a_fact)->factory_number);
 
  return 0;
 }
@@ -113,22 +148,37 @@ int main(int argc, char *argv[]){
     // 2.  Initialize modules:
     		// Do any module initialization. You will have at least two modules: bounded buffer, and statistics. If no initialization is required by your implementation, you may skip this step.
     bbuff_init(); //check: idk if this is right
+	//create mutex lock
+	pthread_mutex_init(&mutex, NULL);
+
+	//intialize semaphores
+	sem_init(&full, 0,0);
+
+	sem_init(&empty, 0, buffer_size);
+
     // 3.  Launch candy-factory threads:
     		//Spawn the requested number of candy-factory threads. To each thread, pass it its factory number: 0 to (number of factories - 1).
 			//- Hint: Store the thread IDs in an array because you’ll need to join on them later.
 			//- Hint: Don’t pass each thread a reference to the same variable because as you change the variable’s value for the next thread, there’s no guaranty the previous thread will have read the previous value yet. You can use an array to have a different variable for each thread
 
-    //int* candyfactory_id[factories];
-	int *fact_numbers[factories]; //
+    pthread_t fact_threadID[factories];
+	//int *fact_numbers[factories]; 
+	fact_t* all_factories[factories];
 	
-	printf("the number is %d\n", *(fact_numbers[1]));
-    pthread_t daThreadId;
+	//printf("the number is %d\n", *(fact_numbers[1]));
+    //pthread_t daThreadID;
     for(int i = 0; i < factories; i++){
-        *(fact_numbers[i]) = i;
-		printf("fact_num is %d\n", *(fact_numbers[i]));
-        pthread_create(&daThreadId, NULL, launch_factory, fact_numbers[i]);
+
+
+        //*(fact_numbers[i]) = i;
+		fact_t *fact = malloc(sizeof (fact_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
+    	fact->factory_number = i; 
+		all_factories[i] = fact;
+
+		printf("fact_num is %d\n", all_factories[i]->factory_number);
+		
+        pthread_create(&fact_threadID[i], NULL, launch_factory,all_factories[i] );
     
-        //candyfactory_id[i] = *daThreadId;
     }
 
     
@@ -148,9 +198,6 @@ int main(int argc, char *argv[]){
 
 
 	
-
-
-
     // 4.  Launch kid threads:
     		// Spawn the requested number of kid threads
 
@@ -188,7 +235,10 @@ Sleep for either 0 or 1 seconds (randomly selected). The kid threads are cancele
 
     printf("Stopping candy factories...\n");
 
-    pthread_join(daThreadId, NULL);
+	for(int i =0; i< factories; i++){
+		pthread_join(fact_threadID[i], NULL);
+	}
+    
 
     // 7.  Wait until no more candy:
     		// While there is still candy in the bounded buffer (check by calling a method in your bounded buffer module), print “Waiting for all candy to be consumed” and sleep for 1 second.
