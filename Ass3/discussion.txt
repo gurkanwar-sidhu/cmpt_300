@@ -1,11 +1,18 @@
 ###Discussion for Assignment 3###
 
 -how to link current_time_in_ms
-- use circular array for buffer?
 - search and remove checks (solve problems)
 - look for mallocs and free all the allocated memory at end
 - use semaphores and mutex locks?????
-
+----------------------
+	- add assertions
+		- buffer should be empty at this point
+		- first candy produced should be first candy eaten (match time produced and factory number)
+----------------------
+WHAT TO ASK TA'
+	- implementaion of locks correct?
+	- what to init in init
+	- how to implement stats (are we allowed to somehow pass in fact structs or candy structs)
 
 Gurk:
 	- Locate lectures which discus the bounded buffer files and anyother related material
@@ -18,6 +25,10 @@ Sarb:
 	- start understanding how to implement the locks (semaphores)
 	- implement some of locks and semaphores
 	- start on statistics
+
+
+
+
 
 
 

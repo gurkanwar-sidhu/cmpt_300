@@ -16,8 +16,18 @@ the stats code when an item is consumed.
 */
 
 void stats_init(int num_producers){
-    // struct definition
+    // struct definition : 
+        // int prod_time_arr : store time produced. only need size 10 because at no point will we need to keep track of produced time of more than 10 candies
+        //Min_Delay = 1. produced gets called at least once. 2. store value(s) in prod_time_arr 3. when consumed gets called find smallest produced time in array. use that and current time to find delay. if delay is smaller than current delay then replace.
+        //max_delay = see min delay
+        //totalDelay =  1. produced gets called at least once. 2. store value(s) in prod_time_arr 3. when consumed gets called find smallest produced time in array. use that and current time to find delay. add that to total delay
+      
+        //made
+        //eaten
+
+        //avg_delay = totaltimeusedtoconsume - totaltimeused to produce/Made
     // intialize the stat struct array here
+    
 }
 void stats_cleanup(void);
 void stats_record_produced(int factory_number);

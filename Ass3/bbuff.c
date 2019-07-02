@@ -68,6 +68,7 @@ void* bbuff_blocking_extract(void){
     }
     else{
         candy_t *candy = theBuffer[front];
+        printf("extracting a candy %d\n", candy->factory_number);
         front++;
         front = front % 10;
         size--;
