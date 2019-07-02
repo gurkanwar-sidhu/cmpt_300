@@ -59,29 +59,35 @@ double current_time_in_ms(void)
 
 typedef struct  {
     int factory_number;
-    double time_stamp_in_ms;
+    double time_made;
 } candy_t;
 
 typedef struct  {
     int factory_number;
 	int made;
 	int eaten;
-	double min_delay;
-	double max_delay;
-    double time_stamp_in_ms;
 } fact_t;
 
 typedef struct {
     int kid_number;
-
+    double time_eaten;
 } kid_t;
 
+typedef struct {
+    int num_producers;
+    int factory_number;
+    double min_delay;
+    double max_delay;
+    candy_t candy;
+    fact_t fact;
+    kid_t kid;
+} stat_t;
 //inserting one candy
 void insertCandy(int fact_number) {
 
     candy_t *candy = malloc(sizeof (candy_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
     candy->factory_number = fact_number; 
-	candy->time_stamp_in_ms = current_time_in_ms();
+	candy->time_made = current_time_in_ms();
     bbuff_blocking_insert(candy);
 }
 
@@ -177,7 +183,9 @@ int main(int argc, char *argv[]){
     // 2.  Initialize modules:
     		// Do any module initialization. You will have at least two modules: bounded buffer, and statistics. If no initialization is required by your implementation, you may skip this step.
     bbuff_init(); //check: idk if this is right
-	//create mutex lock
+	stats_init(factories);
+
+    //create mutex lock
 	pthread_mutex_init(&mutex, NULL);
 
 	//intialize semaphores

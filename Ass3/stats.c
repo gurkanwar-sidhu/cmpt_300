@@ -1,3 +1,8 @@
+#include <stdbool.h>
+// check : for testing delete these:
+#include <stdio.h> 
+#include <stdlib.h> 
+
 //need to track a number of values for each candy-factory. It is suggested you create a struct
 //with all required fields, and then build an array of such structs (one element for each
 //candy-factory). The stats_init() function can initialize your data storage and get it ready
@@ -30,6 +35,9 @@ void stats_init(int num_producers){
     
 }
 void stats_cleanup(void);
-void stats_record_produced(int factory_number);
+void stats_record_produced(int factory_number){
+	stat_t* stats = malloc(sizeof(stat_t));
+	
+}
 void stats_record_consumed(int factory_number, double delay_in_ms);
 void stats_display(void);
