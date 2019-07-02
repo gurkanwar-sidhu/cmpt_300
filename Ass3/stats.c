@@ -14,3 +14,12 @@ candy was produced (dynamically allocated) until consumed (eaten by the kid). Th
 by the factory thread calling the stats code when a candy is created, and the kid thread calling
 the stats code when an item is consumed.
 */
+
+void stats_init(int num_producers){
+    // struct definition
+    // intialize the stat struct array here
+}
+void stats_cleanup(void);
+void stats_record_produced(int factory_number);
+void stats_record_consumed(int factory_number, double delay_in_ms);
+void stats_display(void);
