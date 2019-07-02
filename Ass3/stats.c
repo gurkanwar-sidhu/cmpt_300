@@ -1,3 +1,6 @@
+#ifndef STATS_H
+#define STATS_H
+
 #include <stdbool.h>
 // check : for testing delete these:
 #include <stdio.h> 
@@ -37,7 +40,7 @@ void stats_init(int num_producers){
 void stats_cleanup(void);
 void stats_record_produced(int factory_number){
 	stat_t* stats = malloc(sizeof(stat_t));
-	
+
 }
 void stats_record_consumed(int factory_number, double delay_in_ms);
 void stats_display(void);

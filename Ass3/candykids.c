@@ -60,6 +60,7 @@ double current_time_in_ms(void)
 typedef struct  {
     int factory_number;
     double time_made;
+    double time_eaten;
 } candy_t;
 
 typedef struct  {
@@ -68,19 +69,19 @@ typedef struct  {
 	int eaten;
 } fact_t;
 
-typedef struct {
+/*typedef struct {
     int kid_number;
     double time_eaten;
 } kid_t;
-
+*/
 typedef struct {
     int num_producers;
     int factory_number;
+    double delay;
     double min_delay;
     double max_delay;
     candy_t candy;
     fact_t fact;
-    kid_t kid;
 } stat_t;
 //inserting one candy
 void insertCandy(int fact_number) {
@@ -117,7 +118,8 @@ void* launch_factory(void* a_fact){
 		//acquire the mutex lock
 		pthread_mutex_lock(&mutex);
         insertCandy(((fact_t*)a_fact)->factory_number);
-		//release mutex lock
+		a_fact->made++;
+        //release mutex lock
 		pthread_mutex_unlock(&mutex);
 
 		//signal buffer is not empty
@@ -134,6 +136,7 @@ void eatCandy(){
     if(!bbuff_is_empty()){
      candy_t* candy = bbuff_blocking_extract();
      printf("kid ate candy from factory: %d\n", candy->factory_number);
+     candy->time_eaten = current_time_in_ms();
      free(candy);
     }
 }
