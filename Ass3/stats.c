@@ -79,8 +79,10 @@ void stats_display(void){
 			printf("%8d%10d%10d%15f%15f%15f\n", j, stats[j].made, stats[j].eaten, stats[j].min_delay, avg_delay[j], stats[j].max_delay);
 		}
 
-		//free(&avg_delay[j]);
+		free(&avg_delay[j]);
 	}
+
+	free(&avg_delay);
 }
 
 #endif

@@ -186,10 +186,10 @@ int main(int argc, char *argv[]){
     	
     for(int i = 0; i < factories; i++){
 
-		fact_t* fact = malloc(sizeof(fact_t)); //check NEED TO FREE EVERY CANDY THEN ARRAY
+		fact_t* fact = malloc(sizeof(fact_t)); 
     	fact->factory_number = i; 
 		all_factories[i] = fact;
-
+        free(fact);  
         pthread_create(&fact_threadID[i], NULL, launch_factory, all_factories[i]);
     }
 	
@@ -242,6 +242,7 @@ int main(int argc, char *argv[]){
     stats_display();
     
 // 10. Cleanup any allocated memory:
+
     stats_cleanup();
 
  return 0;		
