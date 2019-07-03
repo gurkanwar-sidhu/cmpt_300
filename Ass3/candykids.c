@@ -65,8 +65,6 @@ typedef struct  {
 
 typedef struct  {
     int factory_number;
-	int made;
-	int eaten;
 } fact_t;
 
 /*typedef struct {
@@ -74,15 +72,15 @@ typedef struct  {
     double time_eaten;
 } kid_t;
 */
-typedef struct {
+/*typedef struct {
     int num_producers;
     int factory_number;
+    int made;
+    int eaten;
     double delay;
     double min_delay;
     double max_delay;
-    candy_t candy;
-    fact_t fact;
-} stat_t;
+} stat_t;*/
 //inserting one candy
 void insertCandy(int fact_number) {
 
@@ -90,6 +88,7 @@ void insertCandy(int fact_number) {
     candy->factory_number = fact_number; 
 	candy->time_made = current_time_in_ms();
     bbuff_blocking_insert(candy);
+    stats_record_produced(fact_number);
 }
 
 
@@ -118,7 +117,7 @@ void* launch_factory(void* a_fact){
 		//acquire the mutex lock
 		pthread_mutex_lock(&mutex);
         insertCandy(((fact_t*)a_fact)->factory_number);
-		a_fact->made++;
+		//a_fact->made++;
         //release mutex lock
 		pthread_mutex_unlock(&mutex);
 
@@ -137,6 +136,8 @@ void eatCandy(){
      candy_t* candy = bbuff_blocking_extract();
      printf("kid ate candy from factory: %d\n", candy->factory_number);
      candy->time_eaten = current_time_in_ms();
+     double delay = candy->time_eaten - candy->time_made;
+     stats_record_consumed(candy->factory_number, delay);
      free(candy);
     }
 }
@@ -304,7 +305,7 @@ for(int s = 0; s < seconds; s++){
    
     // 9.  Print statistics:
 			//Call the statistics module to display the statistics
-
+    stats_display();
     // 10. Cleanup any allocated memory:
     		//Free any dynamically allocated memory. You may need to call cleanup functions in your statistics and bounded buffer modules if they need to free any memory
 	return 0;		
