@@ -35,13 +35,14 @@ void bbuff_blocking_insert(void* item){
         size++;
         int itr = front;
         int tempSize= 0;
-        
+        //candy_t *candy = theBuffer[itr];
         if(size!=0){
             
             if(size==9){ //easier for testing, only print all if buffer is full
                 
                 while(tempSize <size){
                     itr = itr%10;
+                    //candy = theBuffer[itr];
                     itr++;
                     tempSize++;
                 }
@@ -69,7 +70,7 @@ void* bbuff_blocking_extract(void){
 
 _Bool bbuff_is_empty(void){ // true or false= bbuff_is_empty()
    
-    if(size ==0){
+    if(size == 0){
         return true;
     }
 

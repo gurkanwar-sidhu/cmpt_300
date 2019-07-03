@@ -82,7 +82,7 @@ void stats_display(void){
 		free(&avg_delay[j]);
 	}
 
-	free(&avg_delay);
+	//free(&avg_delay);
 }
 
 #endif
