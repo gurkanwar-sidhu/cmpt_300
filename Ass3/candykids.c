@@ -242,6 +242,7 @@ int main(int argc, char *argv[]){
     stats_display();
     
 // 10. Cleanup any allocated memory:
-    		//Free any dynamically allocated memory. You may need to call cleanup functions in your statistics and bounded buffer modules if they need to free any memory
-	return 0;		
+    stats_cleanup();
+
+ return 0;		
 }

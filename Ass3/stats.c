@@ -32,6 +32,9 @@ void stats_init(int num_producers){
 
 void stats_cleanup(void){
 
+	for(int f = 0; f < stats[0].num_producers; f++){
+		free(&stats[f]);
+	}
 }
 
 void stats_record_produced(int factory_number){
@@ -75,6 +78,8 @@ void stats_display(void){
 		else{
 			printf("%8d%10d%10d%15f%15f%15f\n", j, stats[j].made, stats[j].eaten, stats[j].min_delay, avg_delay[j], stats[j].max_delay);
 		}
+
+		//free(&avg_delay[j]);
 	}
 }
 
