@@ -119,19 +119,17 @@ int rand_num_kid(){
 
 void* launch_kid(void* arg){
     
-    int kid_sleep = rand_num_kid();
+    //int kid_sleep = rand_num_kid();
 
     while(true){
 
         sem_wait(&full);
         pthread_mutex_lock(&mutex);
-        
         eatCandy();
-        
         pthread_mutex_unlock(&mutex);
         sem_post(&empty);
 
-        sleep(kid_sleep);
+        sleep(rand_num_kid());
     }
 }
 
@@ -189,11 +187,10 @@ int main(int argc, char *argv[]){
 		fact_t* fact = malloc(sizeof(fact_t)); 
     	fact->factory_number = i; 
 		all_factories[i] = fact;
-        //free(fact);  
         pthread_create(&fact_threadID[i], NULL, launch_factory, all_factories[i]);
+        //free(fact);  
     }
-	
-// 4.  Launch kid threads:
+	// 4.  Launch kid threads:
     pthread_t kid_ID[kids];
 
     for(int k = 0; k < kids; k++){
@@ -213,22 +210,23 @@ int main(int argc, char *argv[]){
 
     printf("Stopping candy factories...\n");
 
+
 	for(int i = 0; i < factories; i++){
 
 		pthread_join(fact_threadID[i], NULL);
 	}
 
+
 // 7.  Wait until no more candy:
     while(!bbuff_is_empty()){
-
-        printf("Waiting for all candy to be consumed.\n");
         sleep(1);
+        printf("Waiting for all candy to be consumed.\n");
     }
 
 // 8.  Stop kid threads:		
     for(int p = 0; p < kids; p++){
 
-    pthread_cancel(kid_ID[p]);
+        pthread_cancel(kid_ID[p]);
     }
 
     printf("Stopping kids.\n");
@@ -243,7 +241,12 @@ int main(int argc, char *argv[]){
     
 // 10. Cleanup any allocated memory:
 
-    //stats_cleanup();
+    stats_cleanup();
+
+    for(int y = 0; y < factories; y++){
+        free(all_factories[y]);
+    }
+
 
  return 0;		
 }

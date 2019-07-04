@@ -22,19 +22,22 @@ stat_t* stats;
 void stats_init(int num_producers){
 
 	stats = malloc(num_producers*(sizeof(stat_t)));
+	
 	for(int s = 0; s < num_producers; s++){
 
-	stats[s].num_producers = num_producers;;
-	stats[s].min_delay = 1000000;
-	stats[s].max_delay = 0;
-	 }    
+		stats[s].num_producers = num_producers;;
+		stats[s].min_delay = 1000000;
+		stats[s].max_delay = 0;
+	}    
 }
 
 void stats_cleanup(void){
 
-	for(int f = 0; f < stats[0].num_producers; f++){
-		free(&stats[f]);
-	}
+	//int size = stats[0].num_producers;
+
+	//for(int f = 0; f < size; f++){
+		free(&stats[0]);
+	//}
 }
 
 void stats_record_produced(int factory_number){
@@ -78,11 +81,7 @@ void stats_display(void){
 		else{
 			printf("%8d%10d%10d%15f%15f%15f\n", j, stats[j].made, stats[j].eaten, stats[j].min_delay, avg_delay[j], stats[j].max_delay);
 		}
-
-		free(&avg_delay[j]);
 	}
-
-	//free(&avg_delay);
 }
 
 #endif
