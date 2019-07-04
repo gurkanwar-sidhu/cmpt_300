@@ -21,7 +21,7 @@ stat_t* stats;
 
 void stats_init(int num_producers){
 
-	stats = malloc(num_producers*(sizeof(stat_t)));
+	stats = (stat_t*)malloc(num_producers*(sizeof(stat_t)));
 	
 	for(int s = 0; s < num_producers; s++){
 		stats[s].num_producers = num_producers;;
