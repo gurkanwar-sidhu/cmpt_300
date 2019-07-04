@@ -108,7 +108,7 @@ void eatCandy(){
      candy->time_eaten = current_time_in_ms();
      double delay = candy->time_eaten - candy->time_made;
      stats_record_consumed(candy->factory_number, delay);
-     free(candy);
+     //free(candy);
     }
 }
 

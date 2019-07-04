@@ -17,43 +17,48 @@ typedef struct {
     double max_delay;
 } stat_t;
 
-stat_t* stats;
+stat_t* stats[0] ;
 
 void stats_init(int num_producers){
+    
+   
+    stat_t* stats = (stat_t*)realloc(stats, num_producers * sizeof(stat_t));
 
-	stats = malloc(num_producers*(sizeof(stat_t)));
 	for(int s = 0; s < num_producers; s++){
+        stat_t* a_stat = malloc(sizeof(stat_t)); 
 
-	stats[s].num_producers = num_producers;;
-	stats[s].min_delay = 1000000;
-	stats[s].max_delay = 0;
+        a_stat->num_producers = num_producers;;
+        a_stat->min_delay = 1000000;
+        a_stat->max_delay = 0;
+        stats[s] = a_stat;
 	 }    
 }
 
 void stats_cleanup(void){
-
-	for(int f = 0; f < stats[0].num_producers; f++){
-		free(&stats[f]);
+/* 
+	for(int f = 0; f < stats[0]->num_producers; f++){
+		//free(&stats[f]);
 	}
+    */
 }
 
 void stats_record_produced(int factory_number){
 		
-		stats[factory_number].made++;
+		stats[factory_number]->made++;
 }
 
 void stats_record_consumed(int factory_number, double delay_in_ms){
 	
-	stats[factory_number].eaten++;
+	stats[factory_number]->eaten++;
 	
-	stats[factory_number].total_delay += delay_in_ms;
+	stats[factory_number]->total_delay += delay_in_ms;
 	
-	if(delay_in_ms < stats[factory_number].min_delay){
-		stats[factory_number].min_delay = delay_in_ms;
+	if(delay_in_ms < stats[factory_number]->min_delay){
+		stats[factory_number]->min_delay = delay_in_ms;
 	}
 
-	if(delay_in_ms > stats[factory_number].max_delay){
-		stats[factory_number].max_delay = delay_in_ms;
+	if(delay_in_ms > stats[factory_number]->max_delay){
+		stats[factory_number]->max_delay = delay_in_ms;
 	}
 }
 
@@ -63,20 +68,20 @@ void stats_display(void){
 
 	printf("%8s%10s%10s%15s%15s%15s\n", "Factory", "#Made", "#Eaten", "Min Delay[ms]", "Avg Delay[ms]", "Max Delay[ms]");
 
-	double avg_delay[stats[0].num_producers];
+	double avg_delay[stats[0]->num_producers];
 
-	for(int i = 0; i < stats[0].num_producers; i++){
-		avg_delay[i] = (stats[i].total_delay)/(stats[i].made);
+	for(int i = 0; i < stats[0]->num_producers; i++){
+		avg_delay[i] = (stats[i]->total_delay)/(stats[i]->made);
 	}
 
-	for(int j = 0; j < stats[0].num_producers; j++){
+	for(int j = 0; j < stats[0]->num_producers; j++){
 
-		if(stats[j].made != stats[j].eaten){
-			printf("ERROR: Mismatch between number made and eaten.");
+		if(stats[j]->made != stats[j]->eaten){
+			printf("ERROR: Mismatch between number made and eaten->");
 		}
 
 		else{
-			printf("%8d%10d%10d%15f%15f%15f\n", j, stats[j].made, stats[j].eaten, stats[j].min_delay, avg_delay[j], stats[j].max_delay);
+			printf("%8d%10d%10d%15f%15f%15f\n", j, stats[j]->made, stats[j]->eaten, stats[j]->min_delay, avg_delay[j], stats[j]->max_delay);
 		}
 
 		free(&avg_delay[j]);
