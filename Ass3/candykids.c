@@ -209,8 +209,7 @@ int main(int argc, char *argv[]){
 	stop_thread = true;
 
     printf("Stopping candy factories...\n");
-
-
+    
 	for(int i = 0; i < factories; i++){
 
 		pthread_join(fact_threadID[i], NULL);

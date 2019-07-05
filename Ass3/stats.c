@@ -17,7 +17,7 @@ typedef struct {
     double max_delay;
 } stat_t;
 
-stat_t* stats=0;
+stat_t* stats = 0;
 
 void stats_init(int num_producers){
 
@@ -34,12 +34,8 @@ void stats_init(int num_producers){
 }
 
 void stats_cleanup(void){
-
-	//int size = stats[0].num_producers;
-
-	//for(int f = 0; f < size; f++){
-		free(&stats[0]);
-	//}
+	
+	free(&stats[0]);
 }
 
 void stats_record_produced(int factory_number){
