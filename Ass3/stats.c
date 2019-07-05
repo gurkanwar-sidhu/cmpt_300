@@ -17,13 +17,16 @@ typedef struct {
     double max_delay;
 } stat_t;
 
-stat_t* stats;
+stat_t* stats=0;
 
 void stats_init(int num_producers){
 
 	stats = (stat_t*)malloc(num_producers*(sizeof(stat_t)));
 	
 	for(int s = 0; s < num_producers; s++){
+		stats[s].made = 0;
+		stats[s].eaten = 0;
+		stats[s].total_delay = 0;
 		stats[s].num_producers = num_producers;;
 		stats[s].min_delay = 1000000;
 		stats[s].max_delay = 0;
