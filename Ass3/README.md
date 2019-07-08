@@ -80,8 +80,9 @@ In this project we safely facilitated a simulation of the production and consump
 
 ## How to run tests
 
-	* simply issue commands 'make shell' 
-	* followed by './shell'
+	* simply issue commands 'make' 
+	* then issue command './candykids' followed by the number of factories and kids you would like to run and for how long
+	* ex: the following command: './candykids 2 2 5' creates 2 factories 2 kids and runs for 5 seconds.
 
 ## Authors
 
