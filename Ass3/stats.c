@@ -2,7 +2,6 @@
 #define STATS_H
 
 #include <stdbool.h>
-// check : for testing delete these:
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h>
@@ -40,7 +39,7 @@ void stats_cleanup(void){
 
 void stats_record_produced(int factory_number){
 		
-		stats[factory_number].made++;
+	stats[factory_number].made++;
 }
 
 void stats_record_consumed(int factory_number, double delay_in_ms){

@@ -43,7 +43,7 @@ double current_time_in_ms(void)
 {
     struct timespec now;
     clock_gettime(CLOCK_REALTIME, &now);
-    return now.tv_sec * 1000.0 + now.tv_nsec/1000000.0;
+ return now.tv_sec * 1000.0 + now.tv_nsec/1000000.0;
 }
 
 typedef struct  {
@@ -87,10 +87,8 @@ void* launch_factory(void* a_fact){
 		//acquire the mutex lock
 		pthread_mutex_lock(&mutex);
         insertCandy(((fact_t*)a_fact)->factory_number);
-		
         //release mutex lock
 		pthread_mutex_unlock(&mutex);
-
 		//signal buffer is not empty
 		sem_post(&full);
 		sleep(factory_sleep);
@@ -119,8 +117,6 @@ int rand_num_kid(){
 
 void* launch_kid(void* arg){
     
-    //int kid_sleep = rand_num_kid();
-
     while(true){
 
         sem_wait(&full);
@@ -148,7 +144,6 @@ int main(int argc, char *argv[]){
     if(factories < 1){
         printf("Error: All arguments must be positive.\n");
         exit(0);
-
     }
 
 	kids = atoi(argv[2]);//pass in # of kids
@@ -188,7 +183,6 @@ int main(int argc, char *argv[]){
     	fact->factory_number = i; 
 		all_factories[i] = fact;
         pthread_create(&fact_threadID[i], NULL, launch_factory, all_factories[i]);
-        //free(fact);  
     }
 	// 4.  Launch kid threads:
     pthread_t kid_ID[kids];
@@ -245,7 +239,6 @@ int main(int argc, char *argv[]){
     for(int y = 0; y < factories; y++){
         free(all_factories[y]);
     }
-
 
  return 0;		
 }
