@@ -6,6 +6,8 @@
 struct nodeStruct {
     int item;
     struct nodeStruct *next;
+    int mem_size;
+   
 };
 
 /*

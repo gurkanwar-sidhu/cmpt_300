@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         kfree(p[i]);
         p[i] = NULL;
     }
-
+    /* 
     printf("available_memory %d", available_memory());
 
     void* before[100] = {NULL};
@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
     // You can assume that the destroy_allocator will always be the 
     // last funciton call of main function to avoid memory leak 
     // before exit
-
+ */
     destroy_allocator();
-
+   
     return 0;
 }

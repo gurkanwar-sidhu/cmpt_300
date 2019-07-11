@@ -1,5 +1,5 @@
 TARGET = kallocation
-OBJS = main.o kallocator.o
+OBJS = main.o kallocator.o 
 
 CFLAGS = -Wall -g -std=c99 -D_POSIX_C_SOURCE=199309L
 CC = gcc

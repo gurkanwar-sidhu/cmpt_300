@@ -11,6 +11,7 @@ struct KAllocator {
     void* memory;
     // Some other data members you want, 
     // such as lists to record allocated/free memory
+    struct nodeStruct *head ;
 };
 
 struct KAllocator kallocator;
@@ -23,6 +24,7 @@ void initialize_allocator(int _size, enum allocation_algorithm _aalgorithm) {
     kallocator.memory = malloc((size_t)kallocator.size);
 
     // Add some other initialization 
+    kallocator.head = NULL;
 }
 
 void destroy_allocator() {
@@ -36,6 +38,11 @@ void* kalloc(int _size) {
     
     // Allocate memory from kallocator.memory 
     // ptr = address of allocated memory
+    ptr = malloc(_size);
+    
+    // add meta-data to linked list
+    struct nodeStruct* aNode = List_createNode(0);
+	List_insertHead(&(kallocator.head), aNode);
 
     return ptr;
 }
