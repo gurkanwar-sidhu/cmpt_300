@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "kallocator.h"
+#include "list_sol.h"
 
 int main(int argc, char* argv[]) {
     initialize_allocator(100, FIRST_FIT);

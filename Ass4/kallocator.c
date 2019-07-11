@@ -1,7 +1,9 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "kallocator.h"
+#include "list_sol.c"
 
 struct KAllocator {
     enum allocation_algorithm aalgorithm;
@@ -31,7 +33,7 @@ void destroy_allocator() {
 
 void* kalloc(int _size) {
     void* ptr = NULL;
-
+    
     // Allocate memory from kallocator.memory 
     // ptr = address of allocated memory
 
