@@ -38,11 +38,22 @@ void* kalloc(int _size) {
     
     // Allocate memory from kallocator.memory 
     // ptr = address of allocated memory
-    ptr = malloc(_size);
+   if(kallocator.head == NULL){ 
     
+        struct nodeStruct* aNode = List_createNode(0);
+        List_insertHead(&(kallocator.head), aNode);
+        ptr = kallocator.memory;
+        kallocator.size = kallocator.size - _size;
+        aNode->item = &ptr;
+        aNode->mem_size = sizeof(ptr);
+    }
+
+
+
+
     // add meta-data to linked list
     struct nodeStruct* aNode = List_createNode(0);
-	List_insertHead(&(kallocator.head), aNode);
+    //List_insertHead(&(kallocator.head), aNode);
 
     return ptr;
 }
