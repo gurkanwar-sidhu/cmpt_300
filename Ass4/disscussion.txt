@@ -1,6 +1,0 @@
-TA questions:
-    -do we need seperate linked list for free memory and allocated memory
-    -do we need to include int pointer inside the structs for linked list to keep track of where that block is pointing to
-    -is the only thing we insert is ints?
-    -initially do we have one node that points to beginning of memory block and has size of total memory block
-        -then when we use some memory we delete the original block. and create two blocks. one small one for the new data, and one big one representing the rest of the free memory
