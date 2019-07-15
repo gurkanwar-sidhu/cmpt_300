@@ -4,9 +4,9 @@
 #define LIST_H_
 
 struct nodeStruct {
-    int item;
+	int size;
+    void** n_ptr;
     struct nodeStruct *next;
-    int mem_size;
    
 };
 
@@ -14,7 +14,7 @@ struct nodeStruct {
  * Allocate memory for a node of type struct nodeStruct and initialize
  * it with the value item. Return a pointer to the new node.
  */
-struct nodeStruct* List_createNode(int item);
+struct nodeStruct* List_createNode(void** ptr);
 
 /*
  * Insert node at the head of the list.
@@ -35,7 +35,7 @@ int List_countNodes (struct nodeStruct *head);
 /*
  * Return the first node holding the value item, return NULL if none found
  */
-struct nodeStruct* List_findNode(struct nodeStruct *head, int item);
+struct nodeStruct* List_findNode(struct nodeStruct *head, void** ptr);
 
 /*
  * Delete node from the list and free memory allocated to it.
@@ -49,7 +49,7 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node);
  * Sort the list in ascending order based on the item field.
  * Any sorting algorithm is fine.
  */
-void List_sort (struct nodeStruct **headRef);
+//void List_sort (struct nodeStruct **headRef);
 
 
 #endif

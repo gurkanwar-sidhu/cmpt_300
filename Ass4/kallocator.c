@@ -11,7 +11,8 @@ struct KAllocator {
     void* memory;
     // Some other data members you want, 
     // such as lists to record allocated/free memory
-    struct nodeStruct *head ;
+    struct nodeStruct *a_head;
+    struct nodeStruct *f_head;
 };
 
 struct KAllocator kallocator;
@@ -24,7 +25,7 @@ void initialize_allocator(int _size, enum allocation_algorithm _aalgorithm) {
     kallocator.memory = malloc((size_t)kallocator.size);
 
     // Add some other initialization 
-    kallocator.head = NULL;
+    kallocator.a_head = NULL;
 }
 
 void destroy_allocator() {
@@ -38,24 +39,33 @@ void* kalloc(int _size) {
     
     // Allocate memory from kallocator.memory 
     // ptr = address of allocated memory
-   if(kallocator.head == NULL){ 
+   if(kallocator.a_head == NULL){ 
     
-        struct nodeStruct* aNode = List_createNode(0);
-        List_insertHead(&(kallocator.head), aNode);
+        struct nodeStruct* new_node = List_createNode(&ptr);
+        List_insertHead(&(kallocator.a_head), new_node);
         ptr = kallocator.memory;
-        kallocator.size = kallocator.size - _size;
-        aNode->item = &ptr;
-        aNode->mem_size = sizeof(ptr);
+        kallocator.size -= _size;
+        new_node->n_ptr = &ptr;
+        new_node->size = sizeof(ptr);
     }
 
-
-
-
+    else if(kallocator.a_head != NULL){
+        int count = List_countNodes((kallocator.a_head));
+        /*struct nodeStruct* current = kallocator.head;
+        while(count > 0){
+            current = current->next;
+            count--;
+        }*/
     // add meta-data to linked list
-    struct nodeStruct* aNode = List_createNode(0);
-    //List_insertHead(&(kallocator.head), aNode);
-
-    return ptr;
+        struct nodeStruct* new_node = List_createNode(&ptr);
+        List_insertTail(&(kallocator.a_head), new_node);
+        ptr = kallocator.memory + (count*_size);
+        kallocator.size -= _size;
+        new_node->n_ptr = &ptr;
+        new_node->size = sizeof(ptr);
+    }
+    
+ return ptr;
 }
 
 void kfree(void* _ptr) {
@@ -75,6 +85,17 @@ int compact_allocation(void** _before, void** _after) {
 
 int available_memory() {
     int available_memory_size = 0;
+    int allocated_memory = 0;
+    int count = List_countNodes((kallocator.a_head));
+    struct nodeStruct* current = kallocator.a_head;
+    
+    while(count > 0){
+        allocated_memory += current->size;
+        current = current->next;
+        count--;
+    }
+
+    available_memory_size = 100 - allocated_memory;
     // Calculate available memory size
     return available_memory_size;
 }

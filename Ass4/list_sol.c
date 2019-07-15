@@ -3,19 +3,19 @@
 #include <assert.h>
 #include <stdbool.h>
 
-static _Bool doSinglePassOnSort(struct nodeStruct **headRef);
-static void swapElements(struct nodeStruct **previous, struct nodeStruct *nodeA, struct nodeStruct *b);
+//static _Bool doSinglePassOnSort(struct nodeStruct **headRef);
+//static void swapElements(struct nodeStruct **previous, struct nodeStruct *nodeA, struct nodeStruct *b);
 
 
 /*
  * Allocate memory for a node of type struct nodeStruct and initialize
  * it with the value item. Return a pointer to the new node.
  */
-struct nodeStruct* List_createNode(int item)
+struct nodeStruct* List_createNode(void** ptr)
 {
 	struct nodeStruct *pNode = malloc(sizeof(struct nodeStruct));
 	if (pNode != NULL) {
-		pNode->item = item;
+		pNode->n_ptr = *ptr;
 	}
 	return pNode;
 }
@@ -68,11 +68,11 @@ int List_countNodes (struct nodeStruct *head)
 /*
  * Return the first node holding the value item, return NULL if none found
  */
-struct nodeStruct* List_findNode(struct nodeStruct *head, int item)
+struct nodeStruct* List_findNode(struct nodeStruct *head, void** ptr)
 {
 	struct nodeStruct *current = head;
 	while (current != NULL) {
-		if (current->item == item) {
+		if (current->n_ptr == *ptr) {
 			return current;
 		}
 		current = current->next;
@@ -117,7 +117,7 @@ void List_deleteNode (struct nodeStruct **headRef, struct nodeStruct *node)
  * Sort the list in ascending order based on the item field.
  * Any sorting algorithm is fine.
  */
-void List_sort (struct nodeStruct **headRef)
+/*void List_sort (struct nodeStruct **headRef)
 {
 	while (doSinglePassOnSort(headRef)) {
 		// Do nothing: work done in loop condition.
@@ -152,4 +152,4 @@ static void swapElements(struct nodeStruct **previous,
 	*previous = nodeB;
 	nodeA->next = nodeB->next;
 	nodeB->next = nodeA;
-}
+}*/

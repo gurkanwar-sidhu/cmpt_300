@@ -4,8 +4,8 @@
 
 int main(int argc, char* argv[]) {
     initialize_allocator(100, FIRST_FIT);
-    // initialize_allocator(100, BEST_FIT);
-    // initialize_allocator(100, WORST_FIT);
+    initialize_allocator(100, BEST_FIT);
+    initialize_allocator(100, WORST_FIT);
     printf("Using first fit algorithm on memory size 100\n");
 
     int* p[50] = {NULL};
@@ -29,8 +29,8 @@ int main(int argc, char* argv[]) {
         kfree(p[i]);
         p[i] = NULL;
     }
-    /* 
-    printf("available_memory %d", available_memory());
+    
+    printf("available_memory %d\n", available_memory());
 
     void* before[100] = {NULL};
     void* after[100] = {NULL};
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     // You can assume that the destroy_allocator will always be the 
     // last funciton call of main function to avoid memory leak 
     // before exit
- */
+ 
     destroy_allocator();
    
     return 0;
