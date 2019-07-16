@@ -4,8 +4,8 @@
 
 int main(int argc, char* argv[]) {
     initialize_allocator(100, FIRST_FIT);
-    initialize_allocator(100, BEST_FIT);
-    initialize_allocator(100, WORST_FIT);
+    //initialize_allocator(100, BEST_FIT);
+    //initialize_allocator(100, WORST_FIT);
     printf("Using first fit algorithm on memory size 100\n");
 
     int* p[50] = {NULL};
@@ -22,11 +22,12 @@ int main(int argc, char* argv[]) {
     print_statistics();
 
     for(int i=0; i<10; ++i) {
-        if(i%2 == 0)
-            continue;
+        //if(i%2 == 0)
+         //   continue;
 
         printf("Freeing p[%d]\n", i);
         kfree(p[i]);
+        printf("p[%d] @ %p has been freed\n", i, p[i]);
         p[i] = NULL;
     }
     

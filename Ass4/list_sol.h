@@ -4,9 +4,9 @@
 #define LIST_H_
 
 struct nodeStruct {
-	int size;
-    void** n_ptr;
-    struct nodeStruct *next;
+	int size;		//size of ptr
+    void** n_ptr;	//pointer to the pointer in list
+    struct nodeStruct *next;// points to next node in list
    
 };
 
