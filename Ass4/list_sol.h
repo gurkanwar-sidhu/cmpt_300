@@ -5,7 +5,7 @@
 
 struct nodeStruct {
 	int size;		//size of ptr
-    void** n_ptr;	//pointer to the pointer in list
+    void* n_ptr;	//pointer to the pointer in list
     struct nodeStruct *next;// points to next node in list
    
 };
@@ -14,7 +14,7 @@ struct nodeStruct {
  * Allocate memory for a node of type struct nodeStruct and initialize
  * it with the value item. Return a pointer to the new node.
  */
-struct nodeStruct* List_createNode(void** ptr);
+struct nodeStruct* List_createNode(void* ptr);
 
 /*
  * Insert node at the head of the list.
@@ -35,7 +35,7 @@ int List_countNodes (struct nodeStruct *head);
 /*
  * Return the first node holding the value item, return NULL if none found
  */
-struct nodeStruct* List_findNode(struct nodeStruct *head, void** ptr);
+struct nodeStruct* List_findNode(struct nodeStruct *head, void* ptr);
 
 /*
  * Delete node from the list and free memory allocated to it.

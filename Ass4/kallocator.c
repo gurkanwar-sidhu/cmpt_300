@@ -54,14 +54,14 @@ void* kalloc(int _size) {
    if(count == 0){ 
         
         //printf("count should be 0 only appears once.\n");
-        struct nodeStruct* new_node = List_createNode(&ptr);
+        struct nodeStruct* new_node = List_createNode(ptr);
         List_insertHead(&(kallocator.a_head), new_node);
         ptr = kallocator.memory;
         kallocator.size -= _size;
-        new_node->n_ptr = &ptr;
+        new_node->n_ptr = ptr;
         new_node->size = sizeof(ptr);
         new_node->next = NULL;
-    printf("head pointing to: %p\n", *(kallocator.a_head->n_ptr));
+    //printf("head pointing to: %p\n", (kallocator.a_head->n_ptr));
 
     }
 
@@ -69,14 +69,14 @@ void* kalloc(int _size) {
     // add meta-data to linked list
         //count = List_countNodes((kallocator.a_head));
         //printf("count: %d, should be more than 0 incrementing\n", count);
-        struct nodeStruct* new_node = List_createNode(&ptr);
+        struct nodeStruct* new_node = List_createNode(ptr);
         List_insertTail(&(kallocator.a_head), new_node);
         ptr = kallocator.memory + (count*_size);
         kallocator.size -= _size;
-        new_node->n_ptr = &ptr;
+        new_node->n_ptr = ptr;
         new_node->size = sizeof(ptr);
         new_node->next = NULL;
-    printf("head pointing to: %p\n", *(kallocator.a_head->n_ptr));
+   // printf("head pointing to: %p\n", (kallocator.a_head->n_ptr));
     }
     
  return ptr;
@@ -88,11 +88,11 @@ void kfree(void* _ptr) {
 
     if(count == 0){
     
-        struct nodeStruct* free_node = List_createNode(&_ptr);   
+        struct nodeStruct* free_node = List_createNode(_ptr);   
         List_insertHead(&(kallocator.f_head), free_node);
-        //assert(*(kallocator.a_head->n_ptr) == _ptr);
+        assert((kallocator.a_head->n_ptr) == _ptr);
         //printf("a:%p, p:%p\n", *(kallocator.a_head->n_ptr), _ptr);
-        free_node->n_ptr = &_ptr;
+        free_node->n_ptr = _ptr;
         free_node->size = sizeof(_ptr);
         //free(_ptr);
     }
@@ -103,7 +103,7 @@ void kfree(void* _ptr) {
     struct nodeStruct* current = kallocator.a_head;
 
     for(int i = 0; i < count; i++){
-        if((*(current->n_ptr) == NULL) && (*(current->next->n_ptr) == NULL)){
+        if(((current->n_ptr) == NULL) && ((current->next->n_ptr) == NULL)){
             //current = current->next;
             //if(*(current->n_ptr) == NULL){
                 current->size += current->next->size;
@@ -116,9 +116,9 @@ void kfree(void* _ptr) {
         }
     }
         //printf("check access.\n");
-        struct nodeStruct* free_node = List_createNode(&_ptr);   
+        struct nodeStruct* free_node = List_createNode(_ptr);   
         List_insertTail(&(kallocator.f_head), free_node);  
-        free_node->n_ptr = &_ptr;
+        free_node->n_ptr = _ptr;
         free_node->size = sizeof(_ptr);
         //free(_ptr);
     }

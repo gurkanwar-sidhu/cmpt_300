@@ -11,11 +11,11 @@
  * Allocate memory for a node of type struct nodeStruct and initialize
  * it with the value item. Return a pointer to the new node.
  */
-struct nodeStruct* List_createNode(void** ptr)
+struct nodeStruct* List_createNode(void* ptr)
 {
 	struct nodeStruct *pNode = malloc(sizeof(struct nodeStruct));
 	if (pNode != NULL) {
-		pNode->n_ptr = *ptr;
+		pNode->n_ptr = ptr;
 	}
 	return pNode;
 }
@@ -68,11 +68,11 @@ int List_countNodes (struct nodeStruct *head)
 /*
  * Return the first node holding the value item, return NULL if none found
  */
-struct nodeStruct* List_findNode(struct nodeStruct *head, void** ptr)
+struct nodeStruct* List_findNode(struct nodeStruct *head, void* ptr)
 {
 	struct nodeStruct *current = head;
 	while (current != NULL) {
-		if (current->n_ptr == *ptr) {
+		if (current->n_ptr == ptr) {
 			return current;
 		}
 		current = current->next;
