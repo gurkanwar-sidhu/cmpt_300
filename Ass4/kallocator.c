@@ -21,15 +21,18 @@ struct KAllocator kallocator;
 void initialize_allocator(int _size, enum allocation_algorithm _aalgorithm) {
     assert(_size > 0);
     kallocator.aalgorithm = _aalgorithm;
+    //printf("aalgorithm test return: %d\n", kallocator.aalgorithm);
     kallocator.size = _size;
     kallocator.memory = malloc((size_t)kallocator.size);
 
     // Add some other initialization 
     kallocator.a_head = NULL;
-    kallocator.f_head = NULL;
+    kallocator.f_head->n_ptr = kallocator.memory;
+    kallocator.f_head->size = _size;
 }
 
 void destroy_allocator() {
+    
     int a_count = List_countNodes((kallocator.a_head));
     for(int a = 0; a < a_count; a++){
         List_deleteNode(&(kallocator.a_head), kallocator.a_head);
@@ -41,45 +44,95 @@ void destroy_allocator() {
     }
 
     free(kallocator.memory);
-
     // free other dynamic allocated memory to avoid memory leak
 }
 
 void* kalloc(int _size) {
     void* ptr = NULL;
-    int count = List_countNodes((kallocator.a_head));
+    int algo = kallocator.aalgorithm;
+    // Allocate memory from kallocator.memory 
+    // ptr = address of allocated memory
 
+ if(algo == 0){ //First Fit
+
+    int count_a = List_countNodes(kallocator.a_head);
+    //int count_f = List_countNodes((kallocator.f_head));
+    
+    if(count_a == 0){ 
+
+        struct nodeStruct* current = kallocator.f_head;
+        while(current != NULL){
+
+            if(current->size >= _size){
+                struct nodeStruct* new_node = List_createNode(ptr);
+                List_insertTail(&(kallocator.a_head), new_node);
+                ptr = current->n_ptr;
+                kallocator.size -= _size;
+                new_node->n_ptr = ptr;
+                new_node->size = _size;
+                new_node->next = NULL;
+                current->n_ptr += _size;
+                current->size -= _size;
+                break;
+            }
+         current = current->next;
+        }
+     return ptr;
+    }
+
+    else if(count_a > 0){
+    // add meta-data to linked list
+        struct nodeStruct* current = kallocator.f_head;
+        while(current != NULL){
+
+            if(current->size >= _size){
+                struct nodeStruct* new_node = List_createNode(ptr);
+                List_insertTail(&(kallocator.a_head), new_node);
+                ptr = current->n_ptr;
+                kallocator.size -= _size;
+                new_node->n_ptr = ptr;
+                new_node->size = _size;
+                new_node->next = NULL;
+                current->n_ptr += _size;
+                current->size -= _size;
+                break;
+            }
+         current = current->next;
+        }
+      return ptr;
+    }
+ }
+
+ if(algo == 1){ //Best Fit
+
+ }
+
+ if(algo == 2){ // Worst Fit
+
+    int count = List_countNodes((kallocator.a_head));
     // Allocate memory from kallocator.memory 
     // ptr = address of allocated memory
    if(count == 0){ 
         
-        //printf("count should be 0 only appears once.\n");
         struct nodeStruct* new_node = List_createNode(ptr);
         List_insertHead(&(kallocator.a_head), new_node);
+        assert(kallocator.size >= _size);
         ptr = kallocator.memory;
         kallocator.size -= _size;
         new_node->n_ptr = ptr;
-        new_node->size = sizeof(ptr);
+        new_node->size = _size;
         new_node->next = NULL;
-    //printf("head pointing to: %p\n", (kallocator.a_head->n_ptr));
-
+     return ptr;
     }
 
-    else {//if(kallocator.a_head != NULL){
-    // add meta-data to linked list
-        //count = List_countNodes((kallocator.a_head));
-        //printf("count: %d, should be more than 0 incrementing\n", count);
+    else{
         struct nodeStruct* new_node = List_createNode(ptr);
         List_insertTail(&(kallocator.a_head), new_node);
-        ptr = kallocator.memory + (count*_size);
-        kallocator.size -= _size;
-        new_node->n_ptr = ptr;
-        new_node->size = sizeof(ptr);
-        new_node->next = NULL;
-   // printf("head pointing to: %p\n", (kallocator.a_head->n_ptr));
-    }
-    
- return ptr;
+        assert(kallocator.size >= _size);
+        ptr = kallocator.memory;
+    }  
+
+ }
 }
 
 void kfree(void* _ptr) {
@@ -91,48 +144,170 @@ void kfree(void* _ptr) {
         struct nodeStruct* free_node = List_createNode(_ptr);   
         List_insertHead(&(kallocator.f_head), free_node);
         assert((kallocator.a_head->n_ptr) == _ptr);
-        //printf("a:%p, p:%p\n", *(kallocator.a_head->n_ptr), _ptr);
         free_node->n_ptr = _ptr;
-        free_node->size = sizeof(_ptr);
-        //free(_ptr);
+        free_node->size = kallocator.a_head->size;
     }
 
-    //count = List_countNodes((kallocator.f_head));
-    else if(count > 0){ //if(kallocator.f_head != NULL){
+    else if(count > 0){ 
 
-    struct nodeStruct* current = kallocator.a_head;
+        struct nodeStruct* current = kallocator.f_head;
 
-    for(int i = 0; i < count; i++){
-        if(((current->n_ptr) == NULL) && ((current->next->n_ptr) == NULL)){
-            //current = current->next;
-            //if(*(current->n_ptr) == NULL){
+        for(int i = 0; i < count; i++){
+            if(((current->n_ptr) == NULL) && ((current->next->n_ptr) == NULL)){
                 current->size += current->next->size;
-                List_deleteNode(&(kallocator.a_head), current->next);
+                List_deleteNode(&(kallocator.f_head), current->next);
                 i++;
-            //}
+            }
+            else{
+                current = current->next;
+            }
         }
-        else{
-            current = current->next;
-        }
-    }
-        //printf("check access.\n");
+
+        current = kallocator.a_head;
+    
         struct nodeStruct* free_node = List_createNode(_ptr);   
         List_insertTail(&(kallocator.f_head), free_node);  
         free_node->n_ptr = _ptr;
-        free_node->size = sizeof(_ptr);
-        //free(_ptr);
-    }
-    //free(_ptr);
-    
+        while(current->n_ptr != free_node){
+            current = current->next;
+            if(current->next == NULL){
+                break;
+            }
+        }
+        free_node->size = current->size;
+    }    
 }
 
 int compact_allocation(void** _before, void** _after) {
+ 
     int compacted_size = 0;
+    int b_index = 0;
+    struct nodeStruct* current = kallocator.a_head;
 
+    while(current != NULL){ //Filling before array
+        if(current->n_ptr != NULL){
+            _before[b_index] = (current->n_ptr);
+            b_index++;
+        }
+        current = current->next;
+    }
+
+/*
+    int i = 0;
+    current = kallocator.a_head;
+    printf("Allocated list pre compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+
+    i = 0;
+    current = kallocator.f_head;
+    printf("Freed list pre compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+*/
+    current = kallocator.f_head;
+
+    while(current->next != NULL){// moving null spaces to back
+        if(current->n_ptr == NULL){
+            current->next->n_ptr -= current->size;
+            struct nodeStruct* dummy = current;
+            List_deleteNode(&(kallocator.a_head), current);
+            List_insertTail(&(kallocator.a_head), dummy);
+        }
+        current = current->next;
+    }
+/*
+    i = 0;
+    current = kallocator.a_head;
+    printf("Allocated list mid compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+
+    i = 0;
+    current = kallocator.f_head;
+    printf("Freed list mid compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+*/
+    int a_index = 0;
+    current = kallocator.f_head;
+
+    while(current != NULL) {//Filing after array
+        
+        _after[a_index] = (current->n_ptr);
+        
+        if(((current->n_ptr) == NULL) && ((current->next->n_ptr) == NULL)){//mergin end NULL node
+            current->size += current->next->size;
+            List_deleteNode(&(kallocator.f_head), current->next);
+        }
+        
+        a_index++;
+        current = current->next;
+} 
+
+/*
+    i = 0;
+    current = kallocator.a_head;
+    printf("Allocated list post compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+
+    i = 0;
+    current = kallocator.f_head;
+    printf("Freed list post compaction:\n\n");
+    while(current != NULL){
+        if(current->n_ptr != NULL){
+        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
+        }
+        i++;
+        current = current->next;
+    }
+*/
+/*
+    printf("\n");
+    for(int b = 0; b < b_index; b++){
+        printf("Pointer stored in before[%d]: %p\n", b, _before[b]);
+    }
+    printf("\n");
+
+    for (int a = 0; a < a_index; a++)
+    {
+        printf("Pointer stored in after[%d]: %p\n", a, _after[a]);
+    }
+    printf("\n");
+
+    assert(b_index = a_index-1);
+*/
+    compacted_size = a_index;
     // compact allocated memory
     // update _before, _after and compacted_size
 
-    return compacted_size;
+ return compacted_size;
 }
 
 int available_memory() {
@@ -149,7 +324,8 @@ int available_memory() {
 
     available_memory_size = 100 - allocated_memory;
     // Calculate available memory size
-    return available_memory_size;
+    //available_memory_size = kallocator.size;
+ return available_memory_size;
 }
 
 void print_statistics() {
