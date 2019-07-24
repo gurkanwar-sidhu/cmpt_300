@@ -340,66 +340,8 @@ int compact_allocation(void** _before, void** _after) {
         current = current->next;
     }
 
-
-    int i = 0;
-    current = kallocator.a_head;
-    printf("Allocated list pre compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-
-    i = 0;
-    current = kallocator.f_head;
-    printf("Freed list pre compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-
     List_sort(&(kallocator.f_head));
 
-/*current = kallocator.f_head;
-
-    while(current->next != NULL){// moving null spaces to back
-        if(current->n_ptr == NULL){
-            current->next->n_ptr -= current->size;
-            struct nodeStruct* dummy = current;
-            List_deleteNode(&(kallocator.a_head), current);
-            List_insertTail(&(kallocator.a_head), dummy);
-        }
-        current = current->next;
-    }
-    */
-/*
-    i = 0;
-    current = kallocator.a_head;
-    printf("Allocated list mid compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-
-    i = 0;
-    current = kallocator.f_head;
-    printf("Freed list mid compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-*/
     struct nodeStruct* current_a = kallocator.a_head;
     struct nodeStruct* current_f = kallocator.f_head;
     while(current_a != NULL){
@@ -428,44 +370,8 @@ int compact_allocation(void** _before, void** _after) {
         current = current->next;
     } 
 
+    assert(b_index = a_index);
 
-    i = 0;
-    current = kallocator.a_head;
-    printf("Allocated list post compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-
-    i = 0;
-    current = kallocator.f_head;
-    printf("Freed list post compaction:\n\n");
-    while(current != NULL){
-        if(current->n_ptr != NULL){
-        printf("p[%d] = %p ; *p[%d] size = %d\n", i, current->n_ptr, i, (current->size));
-        }
-        i++;
-        current = current->next;
-    }
-
-/*
-    printf("\n");
-    for(int b = 0; b < b_index; b++){
-        printf("Pointer stored in before[%d]: %p\n", b, _before[b]);
-    }
-    printf("\n");
-
-    for (int a = 0; a < a_index; a++)
-    {
-        printf("Pointer stored in after[%d]: %p\n", a, _after[a]);
-    }
-    printf("\n");
-
-    assert(b_index = a_index-1);
-*/
     compacted_size = a_index;
     // compact allocated memory
     // update _before, _after and compacted_size
@@ -475,18 +381,6 @@ int compact_allocation(void** _before, void** _after) {
 
 int available_memory() {
     int available_memory_size = 0;
-/*int allocated_memory = 0;
-    int count = List_countNodes((kallocator.a_head));
-    struct nodeStruct* current = kallocator.a_head;
-    
-    while(count > 0){
-        allocated_memory += current->size;
-        current = current->next;
-        count--;
-    }
-
-    available_memory_size = 100 - allocated_memory;
-*/
     // Calculate available memory size
     available_memory_size = kallocator.size;
  return available_memory_size;
@@ -512,7 +406,9 @@ void print_statistics() {
     int free_chunks = List_countNodes(kallocator.f_head);
     int smallest_free_chunk_size = kallocator.size;
     int largest_free_chunk_size = 0;
-
+    if(free_chunks == 0){
+        largest_free_chunk_size = smallest_free_chunk_size;
+    }
     current = kallocator.f_head;
     while(current != NULL){
         if(smallest_free_chunk_size > current->size){
