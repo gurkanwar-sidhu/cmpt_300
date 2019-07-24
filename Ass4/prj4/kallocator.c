@@ -407,15 +407,12 @@ int compact_allocation(void** _before, void** _after) {
                 current_f->size += current_f->next->size;//merge them
                 List_deleteNode(&(kallocator.f_head), current_f->next);
             }
-            if(current_f->next == NULL){
-                break;
-            }
         }
         else{
             current_a = current_a->next;
         }
     }
-      
+
     current = kallocator.a_head;
     int size_diff = 0;
     while(current->next != NULL){

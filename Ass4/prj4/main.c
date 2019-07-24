@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     }
     
     printf("available_memory %d\n", available_memory());
-    
+
     void* before[100] = {NULL};
     void* after[100] = {NULL};
     compact_allocation(before, after);
